@@ -198,11 +198,15 @@
       overflow-y: auto;
       overflow-x: hidden;
       padding-right: 10px;
+      scrollbar-width: none;
+    }
+    .viewport:hover {
       scrollbar-width: thin;
-      scrollbar-color: rgba(28,23,19,.18) transparent;
+      scrollbar-color: rgba(28,23,19,.22) transparent;
     }
     .viewport:active { cursor: grabbing; }
-    .viewport::-webkit-scrollbar { width: 6px; }
+    .viewport::-webkit-scrollbar { width: 0; }
+    .viewport:hover::-webkit-scrollbar { width: 6px; }
     .viewport::-webkit-scrollbar-track { background: transparent; }
     .viewport::-webkit-scrollbar-thumb {
       background: rgba(28,23,19,.16);
@@ -258,7 +262,7 @@
     }
     .empty { color: var(--muted); padding: 28px 8px; }
     .board-grid { display: flex; flex-direction: column; gap: 44px; }
-    .feel-day { text-align: left; padding-top: 6px; }
+    .feel-day { text-align: left; margin-top: 28px; margin-bottom: 36px; padding-top: 12px; }
     .feel-title {
       font-size: 12px;
       letter-spacing: .14em;
