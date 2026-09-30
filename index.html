@@ -194,6 +194,9 @@
     .foot small { display: block; margin-top: 4px; letter-spacing: .04em; font-size: 7px; opacity: .55; }
     #board { padding-top: 32px; }
     .viewport {
+      width: 100%;
+      max-width: 300px;
+      margin-inline: auto;
       max-height: min(62vh, 520px);
       overflow-y: auto;
       overflow-x: hidden;
@@ -221,7 +224,7 @@
       grid-template-columns: 42px 1fr auto;
       align-items: center;
       gap: 8px;
-      padding: 10px 4px;
+      padding: 8px 2px;
       border-bottom: 1px solid rgba(28,23,19,.2);
       opacity: 0;
       transform: translateY(14px);
@@ -239,7 +242,7 @@
       padding-right: 2px;
     }
     .who { text-align: left; }
-    .name { font-weight: 500; font-size: 17px; }
+    .name { font-weight: 400; font-size: 17px; }
     .streak {
       display: block;
       margin-top: 2px;
