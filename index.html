@@ -222,7 +222,7 @@
       <h1>This is your <em>check-in pin</em>.</h1>
       <p class="sub" id="who"></p>
       <div class="code" id="code"></div>
-      <p class="sub">Save it. You use only these four digits to check-in.</p>
+      <p class="sub">Use this pin whenever you want to check-in.</p>
       <button class="btn slim" type="button" data-go="checkin">Go check-in</button>
     </section>
   </div>
@@ -378,7 +378,7 @@
             btn.disabled = false;
             return;
           }
-          document.getElementById("who").textContent = name ? name + ", keep this." : "Keep this.";
+          document.getElementById("who").textContent = name ? name + ", keep this safe." : "Keep this.";
           document.getElementById("code").innerHTML = String(data.pin).split("").map((d) => "<b>" + d + "</b>").join("");
           show("pinpage");
         } catch (err) {
