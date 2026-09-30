@@ -667,7 +667,7 @@
             list.innerHTML = '<p class="empty">Board unavailable.</p>';
             return;
           }
-          const rows = (data.rows || []).filter((r) => r.name);
+          const rows = (data.rows || []).filter((r) => String(r.name || "").trim());
           if (!rows.length) {
             list.className = "track";
             list.innerHTML = '<p class="empty">Nobody on the board yet.</p>';
