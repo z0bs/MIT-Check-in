@@ -198,7 +198,20 @@
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
-      padding-right: 4px;
+      padding-right: 10px;
+      cursor: grab;
+      scrollbar-width: thin;
+      scrollbar-color: #c9a15b #e8d7b8;
+    }
+    .viewport:active { cursor: grabbing; }
+    .viewport::-webkit-scrollbar { width: 8px; }
+    .viewport::-webkit-scrollbar-track {
+      background: rgba(28,23,19,.08);
+      border-radius: 99px;
+    }
+    .viewport::-webkit-scrollbar-thumb {
+      background: #c9a15b;
+      border-radius: 99px;
     }
     .track { display: flex; flex-direction: column; }
     .row {
@@ -246,6 +259,30 @@
       font-weight: 500;
     }
     .empty { color: var(--muted); padding: 28px 8px; }
+    .board-grid { display: flex; flex-direction: column; gap: 22px; }
+    .feel-day { text-align: left; }
+    .feel-title {
+      font-size: 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 10px;
+    }
+    .feel-item {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(28,23,19,.18);
+    }
+    .feel-item strong { display: block; font-weight: 600; margin-bottom: 4px; }
+    .feel-item span { color: var(--muted); font-size: 14px; }
+    body:has(#board.on) .wrap { width: min(760px, calc(100% - 36px)); }
+    @media (min-width: 900px) {
+      .board-grid {
+        display: grid;
+        grid-template-columns: 1.15fr .85fr;
+        gap: 28px;
+        align-items: start;
+      }
+    }
     @media (max-width: 899px) {
       .wrap { width: 80%; padding-top: 0; }
       #board { padding-top: 0; margin-top: -6px; }
@@ -329,7 +366,7 @@
     </section>
 
     <section class="page" id="pinpage">
-      <p class="day">MIVA MIT</p>
+      <p class="day">MIT CHECK-IN</p>
       <h1>This is your <em>check-in pin</em>.</h1>
       <p class="sub" id="who"></p>
       <div class="code" id="code"></div>
@@ -338,7 +375,7 @@
     </section>
 
     <section class="page form-left" id="help">
-      <p class="day">MIVA MIT</p>
+      <p class="day">MIT CHECK-IN</p>
       <h1>Get your <em>pin</em>.</h1>
       <p class="sub">School email and group secret. That is enough for a reset.</p>
       <form id="forgotForm">
@@ -362,11 +399,17 @@
     </section>
 
     <section class="page" id="board">
-      <p class="day">MIVA MIT</p>
+      <p class="day">MIT CHECK-IN</p>
       <h1>Mustard <em>leaderboard</em>.</h1>
       <p class="sub">Highest check-in count</p>
-      <div class="viewport">
-        <div class="track" id="boardList"><p class="empty">Loading board…</p></div>
+      <div class="board-grid">
+        <div class="viewport">
+          <div class="track" id="boardList"><p class="empty">Loading board…</p></div>
+        </div>
+        <div class="feel-day">
+          <p class="feel-title">How people feel today</p>
+          <div id="feelList"><p class="empty">No notes yet.</p></div>
+        </div>
       </div>
       <p class="msg" id="boardMsg"></p>
       <button class="alt" type="button" data-go="checkin">Back to check-in</button>
@@ -696,6 +739,8 @@
         box.onwheel = pause;
         box.ontouchstart = pause;
         box.onpointerdown = pause;
+        box.onmouseenter = () => { boardHold = true; };
+        box.onmouseleave = () => { boardHold = false; };
         if (boardTick) cancelAnimationFrame(boardTick);
         const step = () => {
           if (!document.getElementById("board").classList.contains("on")) {
@@ -745,6 +790,13 @@
           )).join("");
           list.className = "track";
           list.innerHTML = html;
+          const feels = (data.feelings || []).filter((f) => f.name && f.note);
+          const feelBox = document.getElementById("feelList");
+          if (feelBox) {
+            feelBox.innerHTML = feels.length
+              ? feels.map((f) => '<div class="feel-item"><strong>' + String(f.name) + '</strong><span>' + String(f.note) + '</span></div>').join("")
+              : '<p class="empty">No notes yet.</p>';
+          }
           watchBoardScroll();
         } catch (err) {
           msg.className = "msg bad";
