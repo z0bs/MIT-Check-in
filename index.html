@@ -192,20 +192,24 @@
     .form-left label { text-align: left; margin-top: 10px; }
     .hint { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
     .foot small { display: block; margin-top: 4px; letter-spacing: .04em; font-size: 7px; opacity: .55; }
-    #board { padding-top: 18px; }
+    #board { padding-top: 32px; }
     .viewport {
       max-height: min(62vh, 520px);
       overflow-y: auto;
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
-      padding-right: 12px;
+      padding-right: 14px;
       cursor: grab;
+      scrollbar-width: none;
+    }
+    .viewport:hover {
       scrollbar-width: thin;
-      scrollbar-color: rgba(201,161,91,.8) rgba(232,215,184,.35);
+      scrollbar-color: rgba(201,161,91,.75) transparent;
     }
     .viewport:active { cursor: grabbing; }
-    .viewport::-webkit-scrollbar { width: 10px; }
+    .viewport::-webkit-scrollbar { width: 0; }
+    .viewport:hover::-webkit-scrollbar { width: 8px; }
     .viewport::-webkit-scrollbar-track {
       background: rgba(232,215,184,.28);
       border-radius: 99px;
@@ -223,8 +227,8 @@
       grid-template-columns: 42px 1fr auto;
       align-items: center;
       gap: 8px;
-      padding: 16px 4px;
-      border-bottom: 1px solid rgba(28,23,19,.22);
+      padding: 14px 4px;
+      border-bottom: 0;
       opacity: 0;
       transform: translateY(14px);
       animation: in .55s ease forwards;
@@ -263,8 +267,8 @@
       font-weight: 500;
     }
     .empty { color: var(--muted); padding: 28px 8px; }
-    .board-grid { display: flex; flex-direction: column; gap: 22px; }
-    .feel-day { text-align: left; }
+    .board-grid { display: flex; flex-direction: column; gap: 36px; }
+    .feel-day { text-align: left; padding-top: 8px; }
     .feel-title {
       font-size: 12px;
       letter-spacing: .14em;
@@ -273,8 +277,11 @@
       margin: 0 0 10px;
     }
     .feel-item {
-      padding: 12px 0;
-      border-bottom: 1px solid rgba(28,23,19,.18);
+      padding: 10px 0 14px;
+      border: 0;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: in .7s ease forwards;
     }
     .feel-item strong { display: block; font-weight: 600; margin-bottom: 4px; }
     .feel-item span { color: var(--muted); font-size: 14px; }
@@ -283,7 +290,8 @@
       .board-grid {
         display: grid;
         grid-template-columns: 1.15fr .85fr;
-        gap: 28px;
+        gap: 48px;
+        padding-left: 4px;
         align-items: start;
       }
     }
@@ -796,7 +804,7 @@
           const feelBox = document.getElementById("feelList");
           if (feelBox) {
             feelBox.innerHTML = feels.length
-              ? feels.map((f) => '<div class="feel-item"><strong>' + String(f.name) + '</strong><span>' + String(f.note) + '</span></div>').join("")
+              ? feels.map((f, i) => '<div class="feel-item" style="animation-delay:' + (0.12 + i * 0.1) + 's"><strong>' + String(f.name) + '</strong><span>' + String(f.note) + '</span></div>').join("")
               : '<p class="empty">No feelings to show</p>';
           }
           watchBoardScroll();
