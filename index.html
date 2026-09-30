@@ -102,6 +102,7 @@
       appearance: none; -webkit-appearance: none;
     }
     .field::placeholder { color: #b39a7a; opacity: 1; }
+    textarea.field { min-height: 96px; resize: vertical; line-height: 1.4; }
     .btn {
       border: 0; color: var(--cream);
       font: 600 13px Outfit, sans-serif; letter-spacing: .16em;
@@ -228,10 +229,11 @@
     }
     .empty { color: var(--muted); padding: 28px 8px; }
     @media (max-width: 899px) {
-      .wrap { width: 80%; }
-      #board { padding-top: 0; }
-      #board .day { margin-bottom: 8px; }
-      #board h1 { margin-top: 0; font-size: 30px; }
+      .wrap { width: 80%; padding-top: 0; }
+      #board { padding-top: 0; margin-top: -6px; }
+      #board .day { margin: 0 0 6px; }
+      #board h1 { margin: 0 0 8px; font-size: 28px; }
+      #board .sub { margin-bottom: 16px; }
       .form-left label { margin-top: 18px; margin-bottom: 8px; }
       .form-left .field { padding: 12px 14px; }
       .form-left .btn.wide { margin-top: 28px; }
@@ -266,6 +268,7 @@
         <div class="stack">
           <button class="btn slim" type="submit" id="checkBtn"><span class="spin" aria-hidden="true"></span><span class="lbl">MIT check-in</span></button>
           <button class="alt" type="button" data-go="register">New here? <u>Get a pin</u></button>
+          <button class="alt" type="button" data-go="help">Lost pin?</button>
           <button class="go-board" type="button" data-go="board">leaderboard →</button>
         </div>
         <p class="msg" id="checkMsg"></p>
@@ -283,6 +286,7 @@
         <input class="field" id="email" type="email" required autocomplete="email" placeholder="chikamso@miva.edu.ng">
         <label for="phone">Phone number</label>
         <input class="field" id="phone" type="tel" required inputmode="tel" autocomplete="tel" placeholder="+234 800 001 2345">
+        <p class="hint">Start with your country code.</p>
         <label for="gender">Gender</label>
         <select class="field" id="gender" required>
           <option value="" selected disabled>Select</option>
@@ -296,6 +300,7 @@
         <button class="btn wide" type="submit" id="regBtn">Register</button>
         <p class="msg" id="regMsg"></p>
         <button class="alt" type="button" data-go="checkin">Already have a pin? Check-in</button>
+        <button class="alt" type="button" data-go="help">Lost pin?</button>
       </form>
     </section>
 
@@ -306,6 +311,30 @@
       <div class="code" id="code"></div>
       <p class="sub">Use this pin whenever you want to check-in.</p>
       <button class="btn slim" type="button" data-go="checkin">Go check-in</button>
+    </section>
+
+    <section class="page form-left" id="help">
+      <p class="day">MIVA MIT</p>
+      <h1>Get your <em>pin</em>.</h1>
+      <p class="sub">School email and group secret. That is enough for a reset.</p>
+      <form id="forgotForm">
+        <label for="forgotEmail">School email</label>
+        <input class="field" id="forgotEmail" type="email" required autocomplete="email">
+        <label for="forgotSecret">Group secret</label>
+        <input class="field" id="forgotSecret" required autocomplete="off">
+        <button class="btn wide" type="submit" id="forgotBtn">Show my pin</button>
+        <p class="msg" id="forgotMsg"></p>
+      </form>
+      <p class="sub" style="margin-top:28px">Something else? Leave a note.</p>
+      <form id="ticketForm">
+        <label for="ticketEmail">School email</label>
+        <input class="field" id="ticketEmail" type="email" required autocomplete="email">
+        <label for="ticketProblem">Problem</label>
+        <textarea class="field" id="ticketProblem" required></textarea>
+        <button class="btn wide" type="submit" id="ticketBtn">Send note</button>
+        <p class="msg" id="ticketMsg"></p>
+      </form>
+      <button class="alt" type="button" data-go="checkin">Back to check-in</button>
     </section>
 
     <section class="page" id="board">
@@ -357,7 +386,7 @@
         }
       })();
 
-      const pages = ["checkin", "register", "pinpage", "board"];
+      const pages = ["checkin", "register", "pinpage", "board", "help"];
       function show(id) {
         if (!pages.includes(id)) id = "checkin";
         pages.forEach((p) => document.getElementById(p).classList.toggle("on", p === id));
@@ -519,6 +548,83 @@
         } catch (err) {
           msg.className = "msg bad";
           msg.textContent = "Could not reach the Sheet. Try again.";
+        }
+        btn.disabled = false;
+      });
+
+      document.getElementById("forgotForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const msg = document.getElementById("forgotMsg");
+        const btn = document.getElementById("forgotBtn");
+        const email = cleanEmail(document.getElementById("forgotEmail").value);
+        const secret = document.getElementById("forgotSecret").value.trim();
+        if (!email) {
+          msg.className = "msg bad";
+          msg.textContent = "Use your school email.";
+          return;
+        }
+        btn.disabled = true;
+        msg.className = "msg";
+        msg.textContent = "Looking…";
+        try {
+          const res = await fetch(SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify({ action: "forgot", email: email, secret: secret })
+          });
+          const data = await res.json();
+          if (!data.ok || !data.pin) {
+            msg.className = "msg bad";
+            msg.textContent = data.error || "Could not find that pin.";
+            btn.disabled = false;
+            return;
+          }
+          document.getElementById("who").textContent = data.name ? data.name + ", keep this safe." : "Keep this.";
+          document.getElementById("code").innerHTML = String(data.pin).split("").map((d) => "<b>" + d + "</b>").join("");
+          show("pinpage");
+        } catch (err) {
+          msg.className = "msg bad";
+          msg.textContent = "Could not reach the Sheet.";
+        }
+        btn.disabled = false;
+      });
+
+      document.getElementById("ticketForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const msg = document.getElementById("ticketMsg");
+        const btn = document.getElementById("ticketBtn");
+        const email = cleanEmail(document.getElementById("ticketEmail").value);
+        const problem = document.getElementById("ticketProblem").value.trim();
+        if (!email) {
+          msg.className = "msg bad";
+          msg.textContent = "Use your school email.";
+          return;
+        }
+        if (problem.length < 8) {
+          msg.className = "msg bad";
+          msg.textContent = "Write a short note about the problem.";
+          return;
+        }
+        btn.disabled = true;
+        msg.className = "msg";
+        msg.textContent = "Sending…";
+        try {
+          const res = await fetch(SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify({ action: "ticket", email: email, problem: problem })
+          });
+          const data = await res.json();
+          if (!data.ok) {
+            msg.className = "msg bad";
+            msg.textContent = data.error || "Could not send.";
+            btn.disabled = false;
+            return;
+          }
+          msg.className = "msg ok";
+          msg.textContent = "Note sent. We will look at it.";
+          document.getElementById("ticketProblem").value = "";
+        } catch (err) {
+          msg.className = "msg bad";
+          msg.textContent = "Could not reach the Sheet.";
         }
         btn.disabled = false;
       });
