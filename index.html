@@ -150,17 +150,16 @@
     }
     .alt u { text-underline-offset: 3px; }
     .go-board {
-      position: fixed;
-      right: 22px;
-      bottom: 36px;
-      z-index: 3;
+      display: block;
+      width: 100%;
+      margin-top: 18px;
       background: none;
       border: 0;
       padding: 0;
       color: var(--muted);
-      font: 400 12px Outfit, sans-serif;
-      letter-spacing: .06em;
-      opacity: .42;
+      font: 400 14px Outfit, sans-serif;
+      text-align: right;
+      text-decoration: none;
       cursor: pointer;
     }
     .code { display: flex; justify-content: center; gap: 10px; margin: 24px auto; max-width: 292px; }
@@ -258,10 +257,10 @@
         <div class="stack">
           <button class="btn slim" type="submit" id="checkBtn"><span class="spin" aria-hidden="true"></span><span class="lbl">MIT check-in</span></button>
           <button class="alt" type="button" data-go="register">New here? <u>Get a pin</u></button>
+          <button class="go-board" type="button" data-go="board"> Mustard leaderboard →</button>
         </div>
         <p class="msg" id="checkMsg"></p>
       </form>
-      <button class="go-board" type="button" data-go="board">leaderboard →</button>
     </section>
 
     <section class="page form-left" id="register">
@@ -352,13 +351,17 @@
 
       const pages = ["checkin", "register", "pinpage", "board"];
       function show(id) {
+        if (!pages.includes(id)) id = "checkin";
         pages.forEach((p) => document.getElementById(p).classList.toggle("on", p === id));
+        if (location.hash !== "#" + id) location.hash = id;
         window.scrollTo(0, 0);
         if (id === "board") loadBoard();
       }
       document.querySelectorAll("[data-go]").forEach((el) => {
         el.addEventListener("click", () => show(el.getAttribute("data-go")));
       });
+      window.addEventListener("hashchange", () => show((location.hash || "#checkin").slice(1)));
+      if (location.hash) show(location.hash.slice(1));
 
       const boxes = [...document.querySelectorAll(".pins input")];
       const heads = [...document.querySelectorAll("#critters span")];
