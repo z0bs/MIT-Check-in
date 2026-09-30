@@ -103,6 +103,19 @@
     }
     .field::placeholder { color: #b39a7a; opacity: 1; }
     textarea.field { min-height: 96px; resize: vertical; line-height: 1.4; }
+    .feel-wrap { max-width: 292px; margin: 0 auto 18px; }
+    #feelNote { text-align: left; margin-top: 6px; }
+    #feelOpen { margin-top: 0; }
+    .feel {
+      display: none;
+      margin-top: 22px;
+      text-align: left;
+    }
+    .feel.on { display: block; }
+    .feel p {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
     .btn {
       border: 0; color: var(--cream);
       font: 600 13px Outfit, sans-serif; letter-spacing: .16em;
@@ -180,18 +193,14 @@
     .hint { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
     .foot small { display: block; margin-top: 4px; letter-spacing: .04em; font-size: 7px; opacity: .55; }
     .viewport {
-      max-height: min(58vh, 420px);
-      overflow: hidden;
-      mask-image: linear-gradient(to bottom, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
-      -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+      max-height: min(62vh, 520px);
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      padding-right: 4px;
     }
     .track { display: flex; flex-direction: column; }
-    .track.scroll { animation: rise 18s linear infinite; }
-    .track:hover { animation-play-state: paused; }
-    @keyframes rise {
-      from { transform: translateY(0); }
-      to { transform: translateY(-50%); }
-    }
     .row {
       display: grid;
       grid-template-columns: 42px 1fr auto;
@@ -214,7 +223,15 @@
       text-align: right;
       padding-right: 2px;
     }
-    .name { font-weight: 500; font-size: 17px; text-align: left; }
+    .who { text-align: left; }
+    .name { font-weight: 500; font-size: 17px; }
+    .streak {
+      display: block;
+      margin-top: 2px;
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 400;
+    }
     .count {
       font-weight: 700;
       font-variant-numeric: tabular-nums;
@@ -266,6 +283,12 @@
           <input inputmode="numeric" maxlength="1" required aria-label="Digit 3">
           <input inputmode="numeric" maxlength="1" required aria-label="Digit 4">
         </div>
+        <div class="feel-wrap">
+          <button class="alt" type="button" id="feelOpen">Add a note about how you are feeling so far</button>
+          <div id="feelPane" hidden>
+            <textarea class="field" id="feelNote" maxlength="280"></textarea>
+          </div>
+        </div>
         <div class="stack">
           <button class="btn slim" type="submit" id="checkBtn"><span class="spin" aria-hidden="true"></span><span class="lbl">MIT check-in</span></button>
           <button class="alt" type="button" data-go="register">New here? <u>Get a pin</u></button>
@@ -306,7 +329,7 @@
     </section>
 
     <section class="page" id="pinpage">
-      <p class="day">MIT CHECK-IN</p>
+      <p class="day">MIVA MIT</p>
       <h1>This is your <em>check-in pin</em>.</h1>
       <p class="sub" id="who"></p>
       <div class="code" id="code"></div>
@@ -315,7 +338,7 @@
     </section>
 
     <section class="page form-left" id="help">
-      <p class="day">MIT CHECK-IN</p>
+      <p class="day">MIVA MIT</p>
       <h1>Get your <em>pin</em>.</h1>
       <p class="sub">School email and group secret. That is enough for a reset.</p>
       <form id="forgotForm">
@@ -339,7 +362,7 @@
     </section>
 
     <section class="page" id="board">
-      <p class="day">MIT CHECK-IN</p>
+      <p class="day">MIVA MIT</p>
       <h1>Mustard <em>leaderboard</em>.</h1>
       <p class="sub">Highest check-in count</p>
       <div class="viewport">
@@ -429,6 +452,11 @@
         });
       });
 
+      document.getElementById("feelOpen").addEventListener("click", () => {
+        const pane = document.getElementById("feelPane");
+        pane.hidden = !pane.hidden;
+        if (!pane.hidden) document.getElementById("feelNote").focus();
+      });
       document.getElementById("checkForm").addEventListener("submit", async (e) => {
         e.preventDefault();
         const pin = boxes.map((b) => b.value).join("");
@@ -449,7 +477,7 @@
         try {
           const res = await fetch(SCRIPT_URL, {
             method: "POST",
-            body: JSON.stringify({ action: "checkin", pin: pin })
+            body: JSON.stringify({ action: "checkin", pin: pin, feeling: document.getElementById("feelNote").value.trim() })
           });
           const data = await res.json();
           if (!data.ok) {
@@ -460,6 +488,8 @@
           msg.className = "msg ok";
           msg.textContent = "Successfully checked in for today, we go again tomorrow.";
           lbl.textContent = "Checked in";
+          document.getElementById("feelNote").value = "";
+          document.getElementById("feelPane").hidden = true;
           boxes.forEach((b, i) => {
             b.value = "";
             b.disabled = false;
@@ -651,6 +681,36 @@
         btn.disabled = false;
       });
 
+      let boardTimer = 0;
+      let boardHold = false;
+      let boardTick = 0;
+      function watchBoardScroll() {
+        const box = document.querySelector("#board .viewport");
+        if (!box) return;
+        box.scrollTop = 0;
+        const pause = () => {
+          boardHold = true;
+          clearTimeout(boardTimer);
+          boardTimer = setTimeout(() => { boardHold = false; }, 4000);
+        };
+        box.onwheel = pause;
+        box.ontouchstart = pause;
+        box.onpointerdown = pause;
+        if (boardTick) cancelAnimationFrame(boardTick);
+        const step = () => {
+          if (!document.getElementById("board").classList.contains("on")) {
+            boardTick = requestAnimationFrame(step);
+            return;
+          }
+          if (!boardHold && box.scrollHeight > box.clientHeight + 8) {
+            box.scrollTop += 0.35;
+            if (box.scrollTop + box.clientHeight >= box.scrollHeight - 1) box.scrollTop = 0;
+          }
+          boardTick = requestAnimationFrame(step);
+        };
+        boardTick = requestAnimationFrame(step);
+      }
+
       async function loadBoard() {
         const list = document.getElementById("boardList");
         const msg = document.getElementById("boardMsg");
@@ -677,17 +737,15 @@
           const html = rows.map((r, i) => (
             '<div class="row' + (i === 0 ? ' top' : '') + '" style="animation-delay:' + (i % 20) * 0.06 + 's">' +
               '<div class="rank">' + String(i + 1).padStart(2, "0") + '.</div>' +
-              '<div class="name">' + String(r.name) + '</div>' +
+              '<div class="who"><div class="name">' + String(r.name) + '</div>' +
+              (Number(r.streak || 0) > 1 ? '<span class="streak">' + Number(r.streak) + ' day streak</span>' : '') +
+              '</div>' +
               '<div class="count">' + Number(r.checks || 0) + '<small>checks</small></div>' +
             '</div>'
           )).join("");
-          if (rows.length > 6) {
-            list.className = "track scroll";
-            list.innerHTML = html + html;
-          } else {
-            list.className = "track";
-            list.innerHTML = html;
-          }
+          list.className = "track";
+          list.innerHTML = html;
+          watchBoardScroll();
         } catch (err) {
           msg.className = "msg bad";
           msg.textContent = "Could not reach the Sheet.";
