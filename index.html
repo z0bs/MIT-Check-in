@@ -56,30 +56,9 @@
       margin: auto;
       padding: 8px 0 20px;
     }
-    .nav {
-      display: flex;
-      justify-content: center;
-      gap: 6px;
-      margin: 0 0 22px;
-    }
-    .nav button {
-      border: 1px solid rgba(28,23,19,.22);
-      background: transparent;
-      color: var(--muted);
-      font: 600 11px Outfit, sans-serif;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      padding: 8px 12px;
-      border-radius: 999px;
-      cursor: pointer;
-    }
-    .nav button.on {
-      background: #1c1713;
-      color: var(--cream);
-      border-color: #1c1713;
-    }
     .page { display: none; }
     .page.on { display: block; }
+    #checkin { padding-top: 28px; }
     .day {
       font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
       color: var(--muted); margin: 0 0 16px;
@@ -90,7 +69,6 @@
     }
     h1 em { font-style: normal; box-shadow: inset 0 -8px 0 var(--gold); }
     .sub { color: var(--muted); margin: 0 0 22px; font-size: 15px; }
-    .wave { width: 72%; height: 22px; margin: 0 auto 28px; display: block; }
     .critters {
       display: grid; grid-template-columns: repeat(4, 1fr);
       max-width: 292px; margin: 0 auto 12px; min-height: 36px;
@@ -171,9 +149,24 @@
       cursor: pointer;
     }
     .alt u { text-underline-offset: 3px; }
+    .go-board {
+      position: fixed;
+      right: 22px;
+      bottom: 36px;
+      z-index: 3;
+      background: none;
+      border: 0;
+      padding: 0;
+      color: var(--muted);
+      font: 400 12px Outfit, sans-serif;
+      letter-spacing: .06em;
+      opacity: .42;
+      cursor: pointer;
+    }
     .code { display: flex; justify-content: center; gap: 10px; margin: 24px auto; max-width: 292px; }
     .code b { display: grid; place-items: center; }
-    .msg { margin-top: 16px; min-height: 1.2em; }
+    .msg { margin-top: 8px; min-height: 0; }
+    .msg:empty { display: none; margin: 0; }
     .ok { color: var(--ok); }
     .bad { color: var(--bad); }
     .foot {
@@ -183,7 +176,7 @@
     }
     .form-left { text-align: left; }
     .form-left h1, .form-left .day, .form-left .sub, .form-left .alt { text-align: center; }
-    .form-left label { text-align: left; }
+    .form-left label { text-align: left; margin-top: 10px; }
     .hint { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
     .foot small { display: block; margin-top: 4px; letter-spacing: .04em; font-size: 7px; opacity: .55; }
     .viewport {
@@ -248,20 +241,10 @@
   <div class="blob a"></div>
   <div class="blob b"></div>
   <div class="wrap">
-    <nav class="nav">
-      <button type="button" data-go="checkin" class="on">Check-in</button>
-      <button type="button" data-go="register">Get a pin</button>
-      <button type="button" data-go="board">Leaderboard</button>
-    </nav>
-
     <section class="page on" id="checkin">
       <p class="day" id="dayline">—</p>
       <h1>Wagwan, <em id="hello"></em>.</h1>
       <p class="sub">Enter your four digit check-in pin.</p>
-      <svg class="wave" viewBox="0 0 320 28" fill="none" aria-hidden="true">
-        <path d="M2 16 C 40 4, 70 24, 110 14 S 180 4, 220 16 S 280 26, 318 14" stroke="#1c1713" stroke-width="1.6" stroke-linecap="round"/>
-        <path d="M16 20 C 60 10, 100 24, 150 16 S 230 8, 304 18" stroke="#7a4a3a" stroke-width="1.1" opacity=".75"/>
-      </svg>
       <form id="checkForm">
         <div class="critters" id="critters">
           <span>🐰</span><span>🐿️</span><span>🦦</span><span>🦊</span>
@@ -278,6 +261,7 @@
         </div>
         <p class="msg" id="checkMsg"></p>
       </form>
+      <button class="go-board" type="button" data-go="board">leaderboard →</button>
     </section>
 
     <section class="page form-left" id="register">
@@ -300,6 +284,8 @@
           <option value="Mustard">Mustard</option>
         </select>
         <p class="msg" id="genderMsg"></p>
+        <label for="secret">Group secret</label>
+        <input class="field" id="secret" required autocomplete="off">
         <button class="btn wide" type="submit" id="regBtn">Register</button>
         <p class="msg" id="regMsg"></p>
         <button class="alt" type="button" data-go="checkin">Already have a pin? Check-in</button>
@@ -323,6 +309,7 @@
         <div class="track" id="boardList"><p class="empty">Loading board…</p></div>
       </div>
       <p class="msg" id="boardMsg"></p>
+      <button class="alt" type="button" data-go="checkin">Back to check-in</button>
     </section>
   </div>
   <p class="foot" id="foot">Nigeria<small>© Zobs</small></p>
@@ -366,10 +353,6 @@
       const pages = ["checkin", "register", "pinpage", "board"];
       function show(id) {
         pages.forEach((p) => document.getElementById(p).classList.toggle("on", p === id));
-        document.querySelectorAll(".nav button").forEach((b) => {
-          const go = b.getAttribute("data-go");
-          b.classList.toggle("on", go === id || (id === "pinpage" && go === "register"));
-        });
         window.scrollTo(0, 0);
         if (id === "board") loadBoard();
       }
@@ -471,6 +454,7 @@
         const email = cleanEmail(document.getElementById("email").value);
         const phone = cleanPhone(document.getElementById("phone").value);
         const gender = document.getElementById("gender").value;
+        const secret = document.getElementById("secret").value.trim();
         if (name.length < 2) {
           msg.className = "msg bad";
           msg.textContent = "Enter your preferred name.";
@@ -496,6 +480,11 @@
           gmsg.textContent = "Select male or female.";
           return;
         }
+        if (secret !== "Mustard") {
+          msg.className = "msg bad";
+          msg.textContent = "Wrong group secret.";
+          return;
+        }
         document.getElementById("phone").value = phone;
         document.getElementById("email").value = email;
         btn.disabled = true;
@@ -504,7 +493,7 @@
         try {
           const res = await fetch(SCRIPT_URL, {
             method: "POST",
-            body: JSON.stringify({ action: "register", name: name, email: email, phone: phone, gender: gender })
+            body: JSON.stringify({ action: "register", name: name, email: email, phone: phone, gender: gender, secret: secret })
           });
           const data = await res.json();
           if (!data.ok || !data.pin) {
