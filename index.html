@@ -227,6 +227,15 @@
       font-weight: 500;
     }
     .empty { color: var(--muted); padding: 28px 8px; }
+    @media (max-width: 899px) {
+      .wrap { width: 80%; }
+      #board { padding-top: 0; }
+      #board .day { margin-bottom: 8px; }
+      #board h1 { margin-top: 0; font-size: 30px; }
+      .form-left label { margin-top: 18px; margin-bottom: 8px; }
+      .form-left .field { padding: 12px 14px; }
+      .form-left .btn.wide { margin-top: 28px; }
+    }
     @media (min-width: 900px) {
       .wrap { width: 440px; }
       h1 { font-size: 44px; }
@@ -257,7 +266,7 @@
         <div class="stack">
           <button class="btn slim" type="submit" id="checkBtn"><span class="spin" aria-hidden="true"></span><span class="lbl">MIT check-in</span></button>
           <button class="alt" type="button" data-go="register">New here? <u>Get a pin</u></button>
-          <button class="go-board" type="button" data-go="board"> Mustard leaderboard →</button>
+          <button class="go-board" type="button" data-go="board">leaderboard →</button>
         </div>
         <p class="msg" id="checkMsg"></p>
       </form>
