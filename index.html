@@ -192,26 +192,30 @@
     .form-left label { text-align: left; margin-top: 10px; }
     .hint { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
     .foot small { display: block; margin-top: 4px; letter-spacing: .04em; font-size: 7px; opacity: .55; }
+    #board { padding-top: 18px; }
     .viewport {
       max-height: min(62vh, 520px);
       overflow-y: auto;
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
-      padding-right: 10px;
+      padding-right: 12px;
       cursor: grab;
       scrollbar-width: thin;
-      scrollbar-color: #c9a15b #e8d7b8;
+      scrollbar-color: rgba(201,161,91,.8) rgba(232,215,184,.35);
     }
     .viewport:active { cursor: grabbing; }
-    .viewport::-webkit-scrollbar { width: 8px; }
+    .viewport::-webkit-scrollbar { width: 10px; }
     .viewport::-webkit-scrollbar-track {
-      background: rgba(28,23,19,.08);
+      background: rgba(232,215,184,.28);
       border-radius: 99px;
+      border: 1px solid rgba(255,255,255,.28);
     }
     .viewport::-webkit-scrollbar-thumb {
-      background: #c9a15b;
+      background: linear-gradient(180deg, rgba(232,215,184,.75), rgba(201,161,91,.7));
       border-radius: 99px;
+      border: 1px solid rgba(255,255,255,.4);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.45);
     }
     .track { display: flex; flex-direction: column; }
     .row {
@@ -285,7 +289,7 @@
     }
     @media (max-width: 899px) {
       .wrap { width: 80%; padding-top: 0; }
-      #board { padding-top: 0; margin-top: -6px; }
+      #board { padding-top: 16px; margin-top: 0; }
       #board .day { margin: 0 0 6px; }
       #board h1 { margin: 0 0 8px; font-size: 28px; }
       #board .sub { margin-bottom: 16px; }
@@ -408,7 +412,7 @@
         </div>
         <div class="feel-day">
           <p class="feel-title">How people feel today</p>
-          <div id="feelList"><p class="empty">No notes yet.</p></div>
+          <div id="feelList"><p class="empty">No feelings to show</p></div>
         </div>
       </div>
       <p class="msg" id="boardMsg"></p>
@@ -739,8 +743,6 @@
         box.onwheel = pause;
         box.ontouchstart = pause;
         box.onpointerdown = pause;
-        box.onmouseenter = () => { boardHold = true; };
-        box.onmouseleave = () => { boardHold = false; };
         if (boardTick) cancelAnimationFrame(boardTick);
         const step = () => {
           if (!document.getElementById("board").classList.contains("on")) {
@@ -748,7 +750,7 @@
             return;
           }
           if (!boardHold && box.scrollHeight > box.clientHeight + 8) {
-            box.scrollTop += 0.35;
+            box.scrollTop += 0.7;
             if (box.scrollTop + box.clientHeight >= box.scrollHeight - 1) box.scrollTop = 0;
           }
           boardTick = requestAnimationFrame(step);
@@ -795,7 +797,7 @@
           if (feelBox) {
             feelBox.innerHTML = feels.length
               ? feels.map((f) => '<div class="feel-item"><strong>' + String(f.name) + '</strong><span>' + String(f.note) + '</span></div>').join("")
-              : '<p class="empty">No notes yet.</p>';
+              : '<p class="empty">No feelings to show</p>';
           }
           watchBoardScroll();
         } catch (err) {
