@@ -194,7 +194,7 @@
     }
     .row {
       display: grid;
-      grid-template-columns: 48px 1fr auto;
+      grid-template-columns: 42px 1fr auto;
       align-items: center;
       gap: 8px;
       padding: 16px 4px;
@@ -209,11 +209,12 @@
       font-variant-numeric: tabular-nums;
       font-weight: 700;
       font-size: 15px;
-      letter-spacing: .04em;
-      color: var(--muted);
+      letter-spacing: 0;
+      color: var(--ink);
+      text-align: right;
+      padding-right: 2px;
     }
-    .row.top .rank { color: var(--ink); }
-    .name { font-weight: 600; font-size: 17px; text-align: left; }
+    .name { font-weight: 500; font-size: 17px; text-align: left; }
     .count {
       font-weight: 700;
       font-variant-numeric: tabular-nums;
@@ -285,7 +286,7 @@
         <label for="email">School email</label>
         <input class="field" id="email" type="email" required autocomplete="email" placeholder="chikamso@miva.edu.ng">
         <label for="phone">Phone number</label>
-        <input class="field" id="phone" type="tel" required inputmode="tel" autocomplete="tel" placeholder="+234 800 001 2345">
+        <input class="field" id="phone" type="tel" required inputmode="tel" autocomplete="off" placeholder="+234 801 000 0000">
         <p class="hint">Start with your country code.</p>
         <label for="gender">Gender</label>
         <select class="field" id="gender" required>
@@ -528,7 +529,7 @@
         }
         if (!phone) {
           msg.className = "msg bad";
-          msg.textContent = "Start with your country code, like +234 805 518 1101.";
+          msg.textContent = "Start with your country code, like +234 801 000 0000.";
           return;
         }
         if (gender === "Mustard") {
@@ -675,7 +676,7 @@
           }
           const html = rows.map((r, i) => (
             '<div class="row' + (i === 0 ? ' top' : '') + '" style="animation-delay:' + (i % 20) * 0.06 + 's">' +
-              '<div class="rank">' + String(i + 1).padStart(2, "0") + '</div>' +
+              '<div class="rank">' + String(i + 1).padStart(2, "0") + '.</div>' +
               '<div class="name">' + String(r.name) + '</div>' +
               '<div class="count">' + Number(r.checks || 0) + '<small>checks</small></div>' +
             '</div>'
@@ -696,4 +697,3 @@
     })();
   </script>
 </body>
-</html>
