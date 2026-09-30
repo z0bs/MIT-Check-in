@@ -529,7 +529,7 @@
         document.getElementById("email").value = email;
         btn.disabled = true;
         msg.className = "msg";
-        msg.textContent = "Saving...";
+        msg.textContent = "Creating...";
         try {
           const res = await fetch(SCRIPT_URL, {
             method: "POST",
@@ -565,7 +565,7 @@
         }
         btn.disabled = true;
         msg.className = "msg";
-        msg.textContent = "Looking…";
+        msg.textContent = "Retrieving";
         try {
           const res = await fetch(SCRIPT_URL, {
             method: "POST",
