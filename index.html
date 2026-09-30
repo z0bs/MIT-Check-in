@@ -56,6 +56,28 @@
       margin: auto;
       padding: 8px 0 20px;
     }
+    .nav {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin: 0 0 22px;
+    }
+    .nav button {
+      border: 1px solid rgba(28,23,19,.22);
+      background: transparent;
+      color: var(--muted);
+      font: 600 11px Outfit, sans-serif;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .nav button.on {
+      background: #1c1713;
+      color: var(--cream);
+      border-color: #1c1713;
+    }
     .page { display: none; }
     .page.on { display: block; }
     .day {
@@ -164,6 +186,55 @@
     .form-left label { text-align: left; }
     .hint { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
     .foot small { display: block; margin-top: 4px; letter-spacing: .04em; font-size: 7px; opacity: .55; }
+    .viewport {
+      max-height: min(58vh, 420px);
+      overflow: hidden;
+      mask-image: linear-gradient(to bottom, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+    }
+    .track { display: flex; flex-direction: column; }
+    .track.scroll { animation: rise 18s linear infinite; }
+    .track:hover { animation-play-state: paused; }
+    @keyframes rise {
+      from { transform: translateY(0); }
+      to { transform: translateY(-50%); }
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 48px 1fr auto;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 4px;
+      border-bottom: 1px solid rgba(28,23,19,.22);
+      opacity: 0;
+      transform: translateY(14px);
+      animation: in .55s ease forwards;
+    }
+    .row:last-child { border-bottom: 0; }
+    @keyframes in { to { opacity: 1; transform: none; } }
+    .rank {
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: .04em;
+      color: var(--muted);
+    }
+    .row.top .rank { color: var(--ink); }
+    .name { font-weight: 600; font-size: 17px; text-align: left; }
+    .count {
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      font-size: 18px;
+    }
+    .count small {
+      display: block;
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .empty { color: var(--muted); padding: 28px 8px; }
     @media (min-width: 900px) {
       .wrap { width: 440px; }
       h1 { font-size: 44px; }
@@ -177,6 +248,12 @@
   <div class="blob a"></div>
   <div class="blob b"></div>
   <div class="wrap">
+    <nav class="nav">
+      <button type="button" data-go="checkin" class="on">Check-in</button>
+      <button type="button" data-go="register">Get a pin</button>
+      <button type="button" data-go="board">Leaderboard</button>
+    </nav>
+
     <section class="page on" id="checkin">
       <p class="day" id="dayline">—</p>
       <h1>Wagwan, <em id="hello"></em>.</h1>
@@ -202,6 +279,7 @@
         <p class="msg" id="checkMsg"></p>
       </form>
     </section>
+
     <section class="page form-left" id="register">
       <p class="day">MIT CHECK-IN</p>
       <h1>Get a <em>pin</em>.</h1>
@@ -227,6 +305,7 @@
         <button class="alt" type="button" data-go="checkin">Already have a pin? Check-in</button>
       </form>
     </section>
+
     <section class="page" id="pinpage">
       <p class="day">MIVA MIT</p>
       <h1>This is your <em>check-in pin</em>.</h1>
@@ -235,6 +314,16 @@
       <p class="sub">Use this pin whenever you want to check-in.</p>
       <button class="btn slim" type="button" data-go="checkin">Go check-in</button>
     </section>
+
+    <section class="page" id="board">
+      <p class="day">MIVA MIT</p>
+      <h1>Mustard <em>leaderboard</em>.</h1>
+      <p class="sub">Highest check-in count</p>
+      <div class="viewport">
+        <div class="track" id="boardList"><p class="empty">Loading board…</p></div>
+      </div>
+      <p class="msg" id="boardMsg"></p>
+    </section>
   </div>
   <p class="foot" id="foot">Nigeria<small>© Zobs</small></p>
   <script>
@@ -242,13 +331,11 @@
       const SCRIPT_URL = "https://mit-checkin.awzobs-38d.workers.dev";
       const FALLBACK_TZ = "Africa/Lagos";
       const FALLBACK_COUNTRY = "Nigeria";
-
       function greetForHour(hour) {
         if (hour >= 12 && hour < 17) return "ẹ káàsán";
         if (hour >= 17) return "barka da yamma";
         return "ụtụtụ ọma";
       }
-
       function paintClock(timeZone, countryName) {
         const now = new Date();
         const hour = Number(new Intl.DateTimeFormat("en-GB", {
@@ -261,9 +348,7 @@
         const foot = document.getElementById("foot");
         foot.innerHTML = (countryName || FALLBACK_COUNTRY) + "<small>© Zobs</small>";
       }
-
       paintClock(FALLBACK_TZ, FALLBACK_COUNTRY);
-
       (async function locateByCountry() {
         try {
           const res = await fetch("https://ipwho.is/", { cache: "no-store" });
@@ -278,14 +363,20 @@
         }
       })();
 
-      const pages = ["checkin", "register", "pinpage"];
+      const pages = ["checkin", "register", "pinpage", "board"];
       function show(id) {
         pages.forEach((p) => document.getElementById(p).classList.toggle("on", p === id));
+        document.querySelectorAll(".nav button").forEach((b) => {
+          const go = b.getAttribute("data-go");
+          b.classList.toggle("on", go === id || (id === "pinpage" && go === "register"));
+        });
         window.scrollTo(0, 0);
+        if (id === "board") loadBoard();
       }
       document.querySelectorAll("[data-go]").forEach((el) => {
         el.addEventListener("click", () => show(el.getAttribute("data-go")));
       });
+
       const boxes = [...document.querySelectorAll(".pins input")];
       const heads = [...document.querySelectorAll("#critters span")];
       boxes.forEach((box, i) => {
@@ -301,6 +392,7 @@
           }
         });
       });
+
       document.getElementById("checkForm").addEventListener("submit", async (e) => {
         e.preventDefault();
         const pin = boxes.map((b) => b.value).join("");
@@ -310,11 +402,6 @@
         if (pin.length !== 4) {
           msg.className = "msg bad";
           msg.textContent = "Enter all four digits.";
-          return;
-        }
-        if (!SCRIPT_URL) {
-          msg.className = "msg bad";
-          msg.textContent = "Sheet is not connected yet.";
           return;
         }
         btn.disabled = true;
@@ -351,6 +438,7 @@
           }
         }
       });
+
       function cleanEmail(raw) {
         const email = String(raw || "").trim().toLowerCase();
         if (!/^[^\s@]+@miva\.edu\.ng$/.test(email)) return "";
@@ -410,11 +498,6 @@
         }
         document.getElementById("phone").value = phone;
         document.getElementById("email").value = email;
-        if (!SCRIPT_URL) {
-          msg.className = "msg bad";
-          msg.textContent = "Sheet is not connected yet. Paste the Apps Script web app URL first.";
-          return;
-        }
         btn.disabled = true;
         msg.className = "msg";
         msg.textContent = "Saving...";
@@ -439,6 +522,50 @@
         }
         btn.disabled = false;
       });
+
+      async function loadBoard() {
+        const list = document.getElementById("boardList");
+        const msg = document.getElementById("boardMsg");
+        list.innerHTML = '<p class="empty">Loading board…</p>';
+        msg.textContent = "";
+        try {
+          const res = await fetch(SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify({ action: "leaderboard" })
+          });
+          const data = await res.json();
+          if (!data.ok) {
+            msg.className = "msg bad";
+            msg.textContent = data.error || "Could not load leaderboard.";
+            list.innerHTML = '<p class="empty">Board unavailable.</p>';
+            return;
+          }
+          const rows = (data.rows || []).filter((r) => r.name);
+          if (!rows.length) {
+            list.className = "track";
+            list.innerHTML = '<p class="empty">Nobody on the board yet.</p>';
+            return;
+          }
+          const html = rows.map((r, i) => (
+            '<div class="row' + (i === 0 ? ' top' : '') + '" style="animation-delay:' + (i % 20) * 0.06 + 's">' +
+              '<div class="rank">' + String(i + 1).padStart(2, "0") + '</div>' +
+              '<div class="name">' + String(r.name) + '</div>' +
+              '<div class="count">' + Number(r.checks || 0) + '<small>checks</small></div>' +
+            '</div>'
+          )).join("");
+          if (rows.length > 6) {
+            list.className = "track scroll";
+            list.innerHTML = html + html;
+          } else {
+            list.className = "track";
+            list.innerHTML = html;
+          }
+        } catch (err) {
+          msg.className = "msg bad";
+          msg.textContent = "Could not reach the Sheet.";
+          list.innerHTML = '<p class="empty">Board offline.</p>';
+        }
+      }
     })();
   </script>
 </body>
