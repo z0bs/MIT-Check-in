@@ -672,11 +672,7 @@
         const box = document.querySelector("#board .viewport");
         const track = document.getElementById("boardList");
         if (!box || !track) return;
-        const rows = [...track.children];
-        if (!rows.length) return;
-        const one = track.scrollHeight;
-        if (one <= box.clientHeight + 8) return;
-        track.append(...rows.map((row) => row.cloneNode(true)));
+        if (!track.children.length || track.scrollHeight <= box.clientHeight + 8) return;
         box.scrollTop = 0;
         const pause = () => {
           boardHold = true;
@@ -695,9 +691,14 @@
             boardTick = requestAnimationFrame(step);
             return;
           }
-          if (!boardHold) {
+          if (!boardHold && track.firstElementChild) {
+            const first = track.firstElementChild;
+            const h = first.offsetHeight || 1;
             box.scrollTop += 0.6;
-            if (box.scrollTop >= one) box.scrollTop -= one;
+            if (box.scrollTop >= h) {
+              box.scrollTop -= h;
+              track.appendChild(first);
+            }
           }
           boardTick = requestAnimationFrame(step);
         };
