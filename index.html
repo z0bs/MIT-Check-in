@@ -106,16 +106,9 @@
     .feel-wrap { max-width: 292px; margin: 0 auto 18px; }
     #feelNote { text-align: left; margin-top: 6px; }
     #feelOpen { margin-top: 0; }
-    .feel {
-      display: none;
-      margin-top: 22px;
-      text-align: left;
-    }
+    .feel { display: none; margin-top: 22px; text-align: left; }
     .feel.on { display: block; }
-    .feel p {
-      margin: 0 0 8px;
-      font-size: 15px;
-    }
+    .feel p { margin: 0 0 8px; font-size: 15px; }
     .btn {
       border: 0; color: var(--cream);
       font: 600 13px Outfit, sans-serif; letter-spacing: .16em;
@@ -125,11 +118,7 @@
         radial-gradient(circle at 82% 60%, rgba(255,255,255,.14) 0 3px, transparent 4px),
         repeating-linear-gradient(-28deg, rgba(255,255,255,.08) 0 2px, transparent 2px 7px),
         #1c1713;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer;
     }
     .btn:disabled { opacity: .72; cursor: wait; }
     .spin {
@@ -144,37 +133,17 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     .wide { width: 100%; margin-top: 22px; }
     .slim { width: min(220px, 72%); }
-    .stack {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+    .stack { display: flex; flex-direction: column; align-items: center; }
     .alt {
-      display: block;
-      width: 100%;
-      margin-top: 18px;
-      color: var(--muted);
-      font-size: 14px;
-      text-align: center;
-      text-decoration: none;
-      background: none;
-      border: 0;
-      font-family: inherit;
-      cursor: pointer;
+      display: block; width: 100%; margin-top: 18px; color: var(--muted);
+      font-size: 14px; text-align: center; text-decoration: none;
+      background: none; border: 0; font-family: inherit; cursor: pointer;
     }
     .alt u { text-underline-offset: 3px; }
     .go-board {
-      display: block;
-      width: 100%;
-      margin-top: 18px;
-      background: none;
-      border: 0;
-      padding: 0;
-      color: var(--muted);
-      font: 400 14px Outfit, sans-serif;
-      text-align: right;
-      text-decoration: none;
-      cursor: pointer;
+      display: block; width: 100%; margin-top: 18px; background: none; border: 0; padding: 0;
+      color: var(--muted); font: 400 14px Outfit, sans-serif; text-align: right;
+      text-decoration: none; cursor: pointer;
     }
     .code { display: flex; justify-content: center; gap: 10px; margin: 24px auto; max-width: 292px; }
     .code b { display: grid; place-items: center; }
@@ -194,94 +163,54 @@
     .foot small { display: block; margin-top: 4px; letter-spacing: .04em; font-size: 7px; opacity: .55; }
     #board { padding-top: 32px; }
     .viewport {
-      width: 100%;
-      max-width: 360px;
-      margin-inline: auto;
-      max-height: min(62vh, 520px);
-      overflow-y: auto;
-      overflow-x: hidden;
-      padding-right: 10px;
-      scrollbar-width: none;
+      width: 100%; max-width: 360px; margin-inline: auto;
+      max-height: min(62vh, 520px); overflow-y: auto; overflow-x: hidden;
+      padding-right: 10px; scrollbar-width: none;
     }
-    .viewport:hover {
-      scrollbar-width: thin;
-      scrollbar-color: rgba(28,23,19,.22) transparent;
-    }
+    .viewport:hover { scrollbar-width: thin; scrollbar-color: rgba(28,23,19,.22) transparent; }
     .viewport:active { cursor: grabbing; }
     .viewport::-webkit-scrollbar { width: 0; }
     .viewport:hover::-webkit-scrollbar { width: 6px; }
     .viewport::-webkit-scrollbar-track { background: transparent; }
-    .viewport::-webkit-scrollbar-thumb {
-      background: rgba(28,23,19,.16);
-      border-radius: 99px;
-    }
-    .viewport:hover::-webkit-scrollbar-thumb {
-      background: rgba(28,23,19,.28);
-    }
+    .viewport::-webkit-scrollbar-thumb { background: rgba(28,23,19,.16); border-radius: 99px; }
+    .viewport:hover::-webkit-scrollbar-thumb { background: rgba(28,23,19,.28); }
     .track { display: flex; flex-direction: column; }
     .row {
-      display: grid;
-      grid-template-columns: 42px 1fr auto;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 2px;
-      border-bottom: 1px solid rgba(28,23,19,.2);
-      opacity: 0;
-      transform: translateY(14px);
-      animation: in .55s ease forwards;
+      display: grid; grid-template-columns: 42px 1fr auto; align-items: center; gap: 8px;
+      padding: 8px 2px; border-bottom: 1px solid rgba(28,23,19,.2);
+      opacity: 0; transform: translateY(14px); animation: in .55s ease forwards;
     }
     .row:last-child { border-bottom: 0; }
     @keyframes in { to { opacity: 1; transform: none; } }
     .rank {
-      font-variant-numeric: tabular-nums;
-      font-weight: 700;
-      font-size: 13px;
-      letter-spacing: 0;
-      color: var(--ink);
-      text-align: right;
-      padding-right: 2px;
+      font-variant-numeric: tabular-nums; font-weight: 700; font-size: 13px;
+      letter-spacing: 0; color: var(--ink); text-align: right; padding-right: 2px;
     }
     .who { text-align: left; }
     .name { font-weight: 400; font-size: 15px; }
-    .streak {
-      display: block;
-      margin-top: 2px;
-      font-size: 11px;
-      color: var(--muted);
-      font-weight: 400;
-    }
-    .count {
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
-      font-size: 16px;
-    }
+    .streak { display: block; margin-top: 2px; font-size: 11px; color: var(--muted); font-weight: 400; }
+    .count { font-weight: 700; font-variant-numeric: tabular-nums; font-size: 16px; }
     .count small {
-      display: block;
-      font-size: 10px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--muted);
-      font-weight: 500;
+      display: block; font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--muted); font-weight: 500;
     }
     .empty { color: var(--muted); padding: 28px 8px; }
     .board-grid { display: flex; flex-direction: column; gap: 44px; }
     .feel-day { text-align: left; margin-top: 28px; margin-bottom: 36px; padding-top: 12px; }
     .feel-title {
-      font-size: 12px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin: 0 0 10px;
+      font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--muted); margin: 0 0 10px;
     }
     .feel-item {
-      padding: 10px 0 14px;
-      border: 0;
-      opacity: 0;
-      transform: translateY(10px);
+      padding: 10px 0 14px; border: 0; opacity: 0; transform: translateY(10px);
       animation: in .7s ease forwards;
     }
-    .feel-item strong { display: block; font-weight: 600; margin-bottom: 4px; }
-    .feel-item span { color: var(--muted); font-size: 14px; }
+    .feel-item strong { display: block; font-weight: 600; margin-bottom: 2px; }
+    .feel-item .when {
+      display: block; font-weight: 500; color: var(--muted);
+      font-size: 12px; letter-spacing: .04em; margin-bottom: 6px;
+    }
+    .feel-item span { display: block; color: var(--muted); font-size: 14px; }
     body:has(#board.on) .wrap { width: min(440px, calc(100% - 36px)); }
     body:has(#board.on) .blob.a { opacity: .1; transform: translateX(40px); }
     #board .sub { margin-bottom: 56px; }
@@ -291,9 +220,7 @@
       #board .day { margin: 0 0 6px; }
       #board h1 { margin: 0 0 8px; font-size: 28px; }
       #board .sub { margin-bottom: 48px; }
-      .viewport {
-        max-height: min(58vh, 480px);
-      }
+      .viewport { max-height: min(58vh, 480px); }
       .board-grid { gap: 36px; }
       .form-left label { margin-top: 18px; margin-bottom: 8px; }
       .form-left .field { padding: 12px 14px; }
@@ -769,6 +696,20 @@
         boardTick = requestAnimationFrame(step);
       }
 
+      function esc(s) {
+        return String(s || "").replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+      }
+      function clock12(iso) {
+        const d = new Date(iso);
+        if (!iso || Number.isNaN(d.getTime())) return "";
+        return new Intl.DateTimeFormat("en-US", {
+          hour: "numeric", minute: "2-digit", hour12: true, timeZone: "Africa/Lagos"
+        }).format(d);
+      }
+      function bareName(name) {
+        return String(name || "").replace(/\s·\s\d{1,2}:\d{2}\s?[AP]M$/i, "");
+      }
+
       async function loadBoard() {
         const list = document.getElementById("boardList");
         const msg = document.getElementById("boardMsg");
@@ -787,6 +728,14 @@
             return;
           }
           const rows = (data.rows || []).filter((r) => String(r.name || "").trim());
+          rows.sort((a, b) => {
+            const checks = Number(b.checks || 0) - Number(a.checks || 0);
+            if (checks) return checks;
+            if (a.today && b.today && a.today !== b.today) return a.today < b.today ? -1 : 1;
+            if (a.today && !b.today) return -1;
+            if (!a.today && b.today) return 1;
+            return 0;
+          });
           if (!rows.length) {
             list.className = "track";
             list.innerHTML = '<p class="empty">Nobody on the board yet.</p>';
@@ -795,7 +744,7 @@
           const html = rows.map((r, i) => (
             '<div class="row' + (i === 0 ? ' top' : '') + '" style="animation-delay:' + (i % 20) * 0.06 + 's">' +
               '<div class="rank">' + String(i + 1).padStart(2, "0") + '.</div>' +
-              '<div class="who"><div class="name">' + String(r.name) + '</div>' +
+              '<div class="who"><div class="name">' + esc(r.name) + '</div>' +
               (Number(r.streak || 0) > 1 ? '<span class="streak">' + Number(r.streak) + ' day streak</span>' : '') +
               '</div>' +
               '<div class="count">' + Number(r.checks || 0) + '<small>checks</small></div>' +
@@ -804,10 +753,17 @@
           list.className = "track";
           list.innerHTML = html + html;
           const feels = (data.feelings || []).filter((f) => f.name && f.note);
+          feels.sort((a, b) => String(b.at || "").localeCompare(String(a.at || "")));
           const feelBox = document.getElementById("feelList");
           if (feelBox) {
             feelBox.innerHTML = feels.length
-              ? feels.map((f, i) => '<div class="feel-item" style="animation-delay:' + (0.12 + i * 0.1) + 's"><strong>' + String(f.name) + '</strong><span>' + String(f.note) + '</span></div>').join("")
+              ? feels.map((f, i) => {
+                  const when = clock12(f.at);
+                  return '<div class="feel-item" style="animation-delay:' + (0.12 + i * 0.1) + 's"><strong>' +
+                    esc(bareName(f.name)) + '</strong>' +
+                    (when ? '<div class="when">' + esc(when) + '</div>' : '') +
+                    '<span>' + esc(f.note) + '</span></div>';
+                }).join("")
               : '<p class="empty">No feelings to show</p>';
           }
           watchBoardScroll();
