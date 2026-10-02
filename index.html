@@ -1,310 +1,556 @@
-          gmsg.className = "msg bad";
-          gmsg.textContent = "Select male or female.";
-          return;
-        }
-        if (secret !== "Mustard") {
-          msg.className = "msg bad";
-          msg.textContent = "Wrong group secret.";
-          return;
-        }
-        document.getElementById("phone").value = phone;
-        document.getElementById("email").value = email;
-        btn.disabled = true;
-        msg.className = "msg";
-        msg.textContent = "Saving...";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <title>MIT check-in</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231c1713'/%3E%3Ccircle cx='16' cy='16' r='10' fill='%23c9a15b'/%3E%3Cpath d='M11 16.5l3.2 3.2L21.5 12' fill='none' stroke='%231c1713' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #e2cba8;
+      --ink: #1c1713;
+      --muted: #6b6258;
+      --gold: #c9a15b;
+      --cream: #e8d7b8;
+      --ok: #2d4a3c;
+      --bad: #7a3228;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: var(--bg);
+      background-image: radial-gradient(rgba(28,23,19,.07) 1px, transparent 1.2px);
+      background-size: 18px 18px;
+      color: var(--ink);
+      font-family: Outfit, system-ui, sans-serif;
+      overflow-x: hidden;
+    }
+    .blob { position: fixed; pointer-events: none; z-index: 0; }
+    .blob.a {
+      width: 180px; height: 180px; right: -70px; top: 12%;
+      background: #c9a15b; opacity: .28;
+      border-radius: 62% 38% 55% 45% / 48% 58% 42% 52%;
+    }
+    .blob.b {
+      width: 140px; height: 120px; left: -60px; bottom: 18%;
+      background: #7a4a3a; opacity: .16;
+      border-radius: 48% 52% 40% 60% / 60% 40% 60% 40%;
+    }
+    body::after {
+      content: "";
+      position: fixed; left: 0; right: 0; bottom: 0;
+      height: 22px; pointer-events: none;
+      background: repeating-linear-gradient(90deg, rgba(28,23,19,.2) 0 3px, transparent 3px 12px);
+    }
+    .wrap {
+      position: relative; z-index: 1;
+      width: min(400px, calc(100% - 36px));
+      text-align: center;
+      margin: auto;
+      padding: 8px 0 20px;
+    }
+    .page { display: none; }
+    .page.on { display: block; }
+    #checkin { padding-top: 28px; }
+    .day {
+      font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--muted); margin: 0 0 16px;
+    }
+    h1 {
+      font-size: clamp(28px, 8vw, 36px);
+      font-weight: 700; line-height: 1.2; margin: 0 0 12px;
+    }
+    h1 em { font-style: normal; box-shadow: inset 0 -8px 0 var(--gold); }
+    .sub { color: var(--muted); margin: 0 0 22px; font-size: 15px; }
+    .critters {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      max-width: 292px; margin: 0 auto 12px; min-height: 36px;
+    }
+    .critters span {
+      font-size: 26px; opacity: 0;
+      transform: translateY(8px) scale(.7); transition: .2s ease;
+    }
+    .critters span.on { opacity: 1; transform: none; }
+    .pins {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 10px; max-width: 292px; margin: 0 auto 28px;
+    }
+    .pins input, .code b {
+      width: 100%; height: 64px;
+      border: 1px solid rgba(28,23,19,.28);
+      border-radius: 42% 38% 48% 36% / 44% 40% 50% 38%;
+      background: var(--cream); color: var(--ink);
+      text-align: center; font: 600 24px/64px Outfit, sans-serif;
+      padding: 0; appearance: none; -webkit-appearance: none;
+    }
+    .pins input:focus, .field:focus { outline: 2px solid var(--gold); }
+    label {
+      display: block; font-size: 12px; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--muted); margin: 14px 0 6px;
+    }
+    .field {
+      width: 100%; border: 1px solid rgba(28,23,19,.28);
+      background: var(--cream); color: var(--ink);
+      font: 500 16px Outfit, sans-serif; padding: 14px; border-radius: 16px;
+      appearance: none; -webkit-appearance: none;
+    }
+    .field::placeholder { color: #b39a7a; opacity: 1; }
+    textarea.field { min-height: 96px; resize: vertical; line-height: 1.4; }
+    .feel-wrap { max-width: 292px; margin: 0 auto 18px; }
+    #feelNote { text-align: left; margin-top: 6px; }
+    #feelOpen { margin-top: 0; }
+    .feel { display: none; margin-top: 22px; text-align: left; }
+    .feel.on { display: block; }
+    .feel p { margin: 0 0 8px; font-size: 15px; }
+    .btn {
+      border: 0; color: var(--cream);
+      font: 600 13px Outfit, sans-serif; letter-spacing: .16em;
+      text-transform: uppercase; padding: 15px 24px; border-radius: 999px;
+      background:
+        radial-gradient(circle at 18% 40%, rgba(255,255,255,.2) 0 4px, transparent 5px),
+        radial-gradient(circle at 82% 60%, rgba(255,255,255,.14) 0 3px, transparent 4px),
+        repeating-linear-gradient(-28deg, rgba(255,255,255,.08) 0 2px, transparent 2px 7px),
+        #1c1713;
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer;
+    }
+    .btn:disabled { opacity: .72; cursor: wait; }
+    .spin {
+      width: 14px; height: 14px; flex: 0 0 14px;
+      border: 2px solid rgba(232,215,184,.28);
+      border-top-color: var(--cream);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      display: none;
+    }
+    .btn.busy .spin { display: block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .wide { width: 100%; margin-top: 22px; }
+    .slim { width: min(220px, 72%); }
+    .stack { display: flex; flex-direction: column; align-items: center; }
+    .alt {
+      display: block; width: 100%; margin-top: 18px; color: var(--muted);
+      font-size: 14px; text-align: center; text-decoration: none;
+      background: none; border: 0; font-family: inherit; cursor: pointer;
+    }
+    .alt u { text-underline-offset: 3px; }
+    .go-board {
+      display: block; width: 100%; margin-top: 18px; background: none; border: 0; padding: 0;
+      color: var(--muted); font: 400 14px Outfit, sans-serif; text-align: right;
+      text-decoration: none; cursor: pointer;
+    }
+    .code { display: flex; justify-content: center; gap: 10px; margin: 24px auto; max-width: 292px; }
+    .code b { display: grid; place-items: center; }
+    .msg { margin-top: 8px; min-height: 0; }
+    .msg:empty { display: none; margin: 0; }
+    .ok { color: var(--ok); }
+    .bad { color: var(--bad); }
+    .foot {
+      position: relative; width: 100%; padding: 8px 0 34px; z-index: 2;
+      text-align: center; font-size: 11px;
+      letter-spacing: .18em; text-transform: uppercase; color: var(--muted);
+    }
+    .form-left { text-align: left; }
+    .form-left h1, .form-left .day, .form-left .sub, .form-left .alt { text-align: center; }
+    .form-left label { text-align: left; margin-top: 10px; }
+    .hint { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
+    .foot small { display: block; margin-top: 4px; letter-spacing: .04em; font-size: 7px; opacity: .55; }
+    #board { padding-top: 32px; }
+    .viewport {
+      width: 100%; max-width: 360px; margin-inline: auto;
+      max-height: min(62vh, 520px); overflow-y: auto; overflow-x: hidden;
+      padding-right: 10px; scrollbar-width: none;
+    }
+    .viewport:hover, .viewport.touched { scrollbar-width: thin; scrollbar-color: rgba(28,23,19,.22) transparent; }
+    .viewport:active { cursor: grabbing; }
+    .viewport::-webkit-scrollbar { width: 0; }
+    .viewport:hover::-webkit-scrollbar, .viewport.touched::-webkit-scrollbar { width: 6px; }
+    .viewport::-webkit-scrollbar-track { background: transparent; }
+    .viewport::-webkit-scrollbar-thumb { background: rgba(28,23,19,.16); border-radius: 99px; }
+    .viewport:hover::-webkit-scrollbar-thumb { background: rgba(28,23,19,.28); }
+    .track { display: flex; flex-direction: column; }
+    .row {
+      display: grid; grid-template-columns: 42px 1fr auto; align-items: center; gap: 8px;
+      padding: 8px 2px; border-bottom: 1px solid rgba(28,23,19,.2);
+      opacity: 0; transform: translateY(14px); animation: in .55s ease forwards;
+    }
+    .row:last-child { border-bottom: 0; }
+    @keyframes in { to { opacity: 1; transform: none; } }
+    .rank {
+      font-variant-numeric: tabular-nums; font-weight: 700; font-size: 13px;
+      letter-spacing: 0; color: var(--ink); text-align: right; padding-right: 2px;
+    }
+    .who { text-align: left; }
+    .name { font-weight: 400; font-size: 15px; }
+    .streak { display: block; margin-top: 2px; font-size: 11px; color: var(--muted); font-weight: 400; }
+    .streak.ended { color: var(--bad); }
+    .fire { font-size: 14px; }
+    .count { font-weight: 700; font-variant-numeric: tabular-nums; font-size: 16px; }
+    .count small {
+      display: block; font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--muted); font-weight: 500;
+    }
+    .empty { color: var(--muted); padding: 28px 8px; }
+    .board-grid { display: flex; flex-direction: column; gap: 44px; }
+    .feel-day { text-align: left; margin-top: 28px; margin-bottom: 36px; padding-top: 12px; }
+    .feel-title {
+      font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--muted); margin: 0 0 10px;
+    }
+    .feel-item {
+      padding: 10px 0 14px; border: 0; opacity: 0; transform: translateY(10px);
+      animation: in .7s ease forwards;
+    }
+    .feel-item strong { display: block; font-weight: 600; margin-bottom: 2px; }
+    .feel-item .when {
+      display: block; font-weight: 500; color: var(--muted);
+      font-size: 12px; letter-spacing: .04em; margin-bottom: 6px;
+    }
+    .feel-item span { display: block; color: var(--muted); font-size: 14px; }
+    body:has(#board.on) .wrap { width: min(440px, calc(100% - 36px)); }
+    body:has(#board.on) .blob.a { opacity: .1; transform: translateX(40px); }
+    #board .sub { margin-bottom: 56px; }
+    @media (max-width: 899px) {
+      .wrap { width: 80%; padding-top: 0; }
+      #board { padding-top: 16px; margin-top: 0; }
+      #board .day { margin: 0 0 6px; }
+      #board h1 { margin: 0 0 8px; font-size: 28px; }
+      #board .sub { margin-bottom: 48px; }
+      .viewport { max-height: min(58vh, 480px); }
+      .board-grid { gap: 36px; }
+      .form-left label { margin-top: 18px; margin-bottom: 8px; }
+      .form-left .field { padding: 12px 14px; }
+      .form-left .btn.wide { margin-top: 28px; }
+    }
+    @media (min-width: 900px) {
+      .wrap { width: 440px; }
+      h1 { font-size: 44px; }
+      .sub { font-size: 16px; }
+      .day { font-size: 12px; }
+      .pins, .critters, .code { max-width: 320px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="blob a"></div>
+  <div class="blob b"></div>
+  <div class="wrap">
+    <section class="page on" id="checkin">
+      <p class="day" id="dayline">—</p>
+      <h1>Wagwan, <em id="hello"></em>.</h1>
+      <p class="sub">Enter your four digit check-in pin.</p>
+      <form id="checkForm">
+        <div class="critters" id="critters">
+          <span>🐰</span><span>🐿️</span><span>🦦</span><span>🦊</span>
+        </div>
+        <div class="pins">
+          <input inputmode="numeric" maxlength="1" required aria-label="Digit 1">
+          <input inputmode="numeric" maxlength="1" required aria-label="Digit 2">
+          <input inputmode="numeric" maxlength="1" required aria-label="Digit 3">
+          <input inputmode="numeric" maxlength="1" required aria-label="Digit 4">
+        </div>
+        <div class="feel-wrap">
+          <button class="alt" type="button" id="feelOpen">Add a note about how you are feeling so far</button>
+          <div id="feelPane" hidden>
+            <textarea class="field" id="feelNote" maxlength="280"></textarea>
+          </div>
+        </div>
+        <div class="stack">
+          <button class="btn slim" type="submit" id="checkBtn"><span class="spin" aria-hidden="true"></span><span class="lbl">MIT check-in</span></button>
+          <button class="alt" type="button" data-go="register">New here? <u>Get a pin</u></button>
+          <button class="alt" type="button" data-go="help">Lost pin?</button>
+          <button class="go-board" type="button" data-go="board">leaderboard →</button>
+        </div>
+        <p class="msg" id="checkMsg"></p>
+      </form>
+    </section>
+
+    <section class="page form-left" id="register">
+      <p class="day">MIT CHECK-IN</p>
+      <h1>Get a <em>pin</em>.</h1>
+      <p class="sub">Name, email, phone number. Register to get a check-in pin.</p>
+      <form id="regForm">
+        <label for="name">Preferred name</label>
+        <input class="field" id="name" required autocomplete="nickname" placeholder="Chikamso">
+        <label for="email">School email</label>
+        <input class="field" id="email" type="email" required autocomplete="email" placeholder="chikamso@miva.edu.ng">
+        <label for="phone">Phone number</label>
+        <input class="field" id="phone" type="tel" required inputmode="tel" autocomplete="off" placeholder="+234 801 000 0000">
+        <p class="hint">Start with your country code.</p>
+        <label for="gender">Gender</label>
+        <select class="field" id="gender" required>
+          <option value="" selected disabled>Select</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Mustard">Mustard</option>
+        </select>
+        <p class="msg" id="genderMsg"></p>
+        <label for="secret">Group secret</label>
+        <input class="field" id="secret" required autocomplete="off">
+        <button class="btn wide" type="submit" id="regBtn">Register</button>
+        <p class="msg" id="regMsg"></p>
+        <button class="alt" type="button" data-go="checkin">Already have a pin? Check-in</button>
+        <button class="alt" type="button" data-go="help">Lost pin?</button>
+      </form>
+    </section>
+
+    <section class="page" id="pinpage">
+      <p class="day">MIT CHECK-IN</p>
+      <h1>This is your <em>check-in pin</em>.</h1>
+      <p class="sub" id="who"></p>
+      <div class="code" id="code"></div>
+      <p class="sub">Use this pin whenever you want to check-in.</p>
+      <button class="btn slim" type="button" data-go="checkin">Go check-in</button>
+    </section>
+
+    <section class="page form-left" id="help">
+      <p class="day">MIT CHECK-IN</p>
+      <h1>Get your <em>pin</em>.</h1>
+      <p class="sub">School email and group secret. That is enough for a reset.</p>
+      <form id="forgotForm">
+        <label for="forgotEmail">School email</label>
+        <input class="field" id="forgotEmail" type="email" required autocomplete="email">
+        <label for="forgotSecret">Group secret</label>
+        <input class="field" id="forgotSecret" required autocomplete="off">
+        <button class="btn wide" type="submit" id="forgotBtn">Show my pin</button>
+        <p class="msg" id="forgotMsg"></p>
+      </form>
+      <p class="sub" style="margin-top:28px">Something else? Leave a note.</p>
+      <form id="ticketForm">
+        <label for="ticketEmail">School email</label>
+        <input class="field" id="ticketEmail" type="email" required autocomplete="email">
+        <label for="ticketProblem">Problem</label>
+        <textarea class="field" id="ticketProblem" required></textarea>
+        <button class="btn wide" type="submit" id="ticketBtn">Send note</button>
+        <p class="msg" id="ticketMsg"></p>
+      </form>
+      <button class="alt" type="button" data-go="checkin">Back to check-in</button>
+    </section>
+
+    <section class="page" id="board">
+      <p class="day">MIT CHECK-IN</p>
+      <h1>Mustard <em>leaderboard</em>.</h1>
+      <p class="sub">Highest check-in count</p>
+      <div class="board-grid">
+        <div class="viewport">
+          <div class="track" id="boardList"><p class="empty">Loading board…</p></div>
+        </div>
+        <div class="feel-day">
+          <p class="feel-title">How people feel today</p>
+          <div id="feelList"><p class="empty">No feelings to show</p></div>
+        </div>
+      </div>
+      <p class="msg" id="boardMsg"></p>
+      <button class="alt" type="button" data-go="checkin">Back to check-in</button>
+    </section>
+  </div>
+  <p class="foot" id="foot">Nigeria<small>© Zobs</small></p>
+  <script>
+    (function () {
+      const SCRIPT_URL = "https://mit-checkin.awzobs-38d.workers.dev";
+      const FALLBACK_TZ = "Africa/Lagos";
+      const FALLBACK_COUNTRY = "Nigeria";
+      function greetForHour(hour) {
+        if (hour >= 12 && hour < 17) return "ẹ káàsán";
+        if (hour >= 17) return "barka da yamma";
+        return "ụtụtụ ọma";
+      }
+      function paintClock(timeZone, countryName) {
+        const now = new Date();
+        const hour = Number(new Intl.DateTimeFormat("en-GB", {
+          hour: "numeric", hour12: false, timeZone
+        }).format(now));
+        document.getElementById("hello").textContent = greetForHour(hour);
+        document.getElementById("dayline").textContent = new Intl.DateTimeFormat("en-GB", {
+          weekday: "long", day: "numeric", month: "long", timeZone
+        }).format(now);
+        const foot = document.getElementById("foot");
+        foot.innerHTML = (countryName || FALLBACK_COUNTRY) + "<small>© Zobs</small>";
+      }
+      paintClock(FALLBACK_TZ, FALLBACK_COUNTRY);
+      (async function locateByCountry() {
         try {
-          const res = await fetch(SCRIPT_URL, {
-            method: "POST",
-            body: JSON.stringify({ action: "register", name: name, email: email, phone: phone, gender: gender, secret: secret })
-          });
-          const data = await res.json();
-          if (!data.ok || !data.pin) {
-            msg.className = "msg bad";
-            msg.textContent = data.error || "Could not save. Try again.";
-            btn.disabled = false;
-            return;
-          }
-          document.getElementById("who").textContent = name ? name + ", keep this safe." : "Keep this.";
-          document.getElementById("code").innerHTML = String(data.pin).split("").map((d) => "<b>" + d + "</b>").join("");
-          show("pinpage");
-        } catch (err) {
-          msg.className = "msg bad";
-          msg.textContent = "Could not reach the Sheet. Try again.";
+          const res = await fetch("https://ipwho.is/", { cache: "no-store" });
+          const geo = await res.json();
+          if (!geo || geo.success === false) return;
+          const country = geo.country || FALLBACK_COUNTRY;
+          const tz = (geo.timezone && geo.timezone.id) || FALLBACK_TZ;
+          paintClock(tz, country);
+        } catch (_) {
+          const localTz = Intl.DateTimeFormat().resolvedOptions().timeZone || FALLBACK_TZ;
+          paintClock(localTz, FALLBACK_COUNTRY);
         }
-        btn.disabled = false;
+      })();
+
+      const pages = ["checkin", "register", "pinpage", "board", "help"];
+      function show(id) {
+        if (!pages.includes(id)) id = "checkin";
+        pages.forEach((p) => document.getElementById(p).classList.toggle("on", p === id));
+        if (location.hash !== "#" + id) location.hash = id;
+        window.scrollTo(0, 0);
+        if (id === "board") loadBoard();
+      }
+      document.querySelectorAll("[data-go]").forEach((el) => {
+        el.addEventListener("click", () => show(el.getAttribute("data-go")));
+      });
+      window.addEventListener("hashchange", () => show((location.hash || "#checkin").slice(1)));
+      if (location.hash) show(location.hash.slice(1));
+
+      const boxes = [...document.querySelectorAll(".pins input")];
+      const heads = [...document.querySelectorAll("#critters span")];
+      function paintPins() {
+        boxes.forEach((b, i) => heads[i].classList.toggle("on", !!b.value));
+      }
+      boxes.forEach((box, i) => {
+        box.addEventListener("focus", () => box.select());
+        box.addEventListener("input", () => {
+          box.value = box.value.replace(/\D/g, "").slice(-1);
+          paintPins();
+          if (box.value && boxes[i + 1]) boxes[i + 1].focus();
+        });
+        box.addEventListener("keydown", (e) => {
+          if (e.key === "Backspace") {
+            if (box.value) {
+              box.value = "";
+              paintPins();
+              e.preventDefault();
+            } else if (boxes[i - 1]) {
+              boxes[i - 1].value = "";
+              paintPins();
+              boxes[i - 1].focus();
+              e.preventDefault();
+            }
+          }
+        });
       });
 
-      document.getElementById("forgotForm").addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const msg = document.getElementById("forgotMsg");
-        const btn = document.getElementById("forgotBtn");
-        const email = cleanEmail(document.getElementById("forgotEmail").value);
-        const secret = document.getElementById("forgotSecret").value.trim();
-        if (!email) {
-          msg.className = "msg bad";
-          msg.textContent = "Use your school email.";
-          return;
-        }
-        btn.disabled = true;
-        msg.className = "msg";
-        msg.textContent = "Looking…";
-        try {
-          const res = await fetch(SCRIPT_URL, {
-            method: "POST",
-            body: JSON.stringify({ action: "forgot", email: email, secret: secret })
-          });
-          const data = await res.json();
-          if (!data.ok || !data.pin) {
-            msg.className = "msg bad";
-            msg.textContent = data.error || "Could not find that pin.";
-            btn.disabled = false;
-            return;
-          }
-          document.getElementById("who").textContent = data.name ? data.name + ", keep this safe." : "Keep this.";
-          document.getElementById("code").innerHTML = String(data.pin).split("").map((d) => "<b>" + d + "</b>").join("");
-          show("pinpage");
-        } catch (err) {
-          msg.className = "msg bad";
-          msg.textContent = "Could not reach the Sheet.";
-        }
-        btn.disabled = false;
+      document.getElementById("feelOpen").addEventListener("click", () => {
+        const pane = document.getElementById("feelPane");
+        pane.hidden = !pane.hidden;
+        if (!pane.hidden) document.getElementById("feelNote").focus();
       });
-
-      document.getElementById("ticketForm").addEventListener("submit", async (e) => {
+      document.getElementById("checkForm").addEventListener("submit", async (e) => {
         e.preventDefault();
-        const msg = document.getElementById("ticketMsg");
-        const btn = document.getElementById("ticketBtn");
-        const email = cleanEmail(document.getElementById("ticketEmail").value);
-        const problem = document.getElementById("ticketProblem").value.trim();
-        if (!email) {
+        const pin = boxes.map((b) => b.value).join("");
+        const msg = document.getElementById("checkMsg");
+        const btn = document.getElementById("checkBtn");
+        const lbl = btn.querySelector(".lbl");
+        if (pin.length !== 4) {
           msg.className = "msg bad";
-          msg.textContent = "Use your school email.";
-          return;
-        }
-        if (problem.length < 8) {
-          msg.className = "msg bad";
-          msg.textContent = "Write a short note about the problem.";
+          msg.textContent = "Enter all four digits.";
           return;
         }
         btn.disabled = true;
+        btn.classList.add("busy");
+        lbl.textContent = "Checking in";
         msg.className = "msg";
-        msg.textContent = "Sending…";
+        msg.textContent = "Hold on, trying to check you in";
+        boxes.forEach((b) => { b.disabled = true; });
         try {
           const res = await fetch(SCRIPT_URL, {
             method: "POST",
-            body: JSON.stringify({ action: "ticket", email: email, problem: problem })
+            body: JSON.stringify({ action: "checkin", pin: pin, feeling: document.getElementById("feelNote").value.trim() })
           });
           const data = await res.json();
           if (!data.ok) {
             msg.className = "msg bad";
-            msg.textContent = data.error || "Could not send.";
-            btn.disabled = false;
+            msg.textContent = data.error || "Could not check in.";
+            if (/already checked in/i.test(data.error || "")) {
+              document.querySelector(".feel-wrap").style.display = "none";
+            }
             return;
           }
+          document.querySelector(".feel-wrap").style.display = "none";
           msg.className = "msg ok";
-          msg.textContent = "Note sent. We will look at it.";
-          document.getElementById("ticketProblem").value = "";
+          msg.textContent = data.noteOnly
+            ? "Note saved for today."
+            : "Successfully checked in for today, we go again tomorrow.";
+          lbl.textContent = "Checked in";
+          document.getElementById("feelNote").value = "";
+          document.getElementById("feelPane").hidden = true;
+          boxes.forEach((b, i) => {
+            b.value = "";
+            b.disabled = false;
+            heads[i].classList.remove("on");
+          });
+          btn.disabled = false;
+          btn.classList.remove("busy");
+          setTimeout(() => {
+            lbl.textContent = "MIT check-in";
+            boxes[0].focus();
+          }, 1200);
         } catch (err) {
           msg.className = "msg bad";
           msg.textContent = "Could not reach the Sheet.";
+        } finally {
+          if (!msg.classList.contains("ok")) {
+            btn.disabled = false;
+            btn.classList.remove("busy");
+            lbl.textContent = "MIT check-in";
+            boxes.forEach((b) => { b.disabled = false; });
+          }
         }
-        btn.disabled = false;
       });
 
-      let boardTimer = 0;
-      let boardHold = false;
-      let boardTick = 0;
-      function watchBoardScroll() {
-        const box = document.querySelector("#board .viewport");
-        const track = document.getElementById("boardList");
-        if (!box || !track) return;
-        if (boardTick) cancelAnimationFrame(boardTick);
-        track.style.transform = "none";
-        box.style.overflowY = "auto";
-        box.style.touchAction = "";
-        box.scrollTop = 0;
-        if (!track.children.length) return;
-
-        const maxH = Math.max(...[...track.children].map((r) => r.offsetHeight || 1));
-        if (track.offsetHeight - box.clientHeight < maxH) return;
-
-        box.style.overflowY = "hidden";
-        box.style.touchAction = "none";
-
-        let offset = 0, last = 0;
-        let dragging = false, lastY = 0;
-
-        const settle = (row) => {
-          row.style.animation = "none";
-          row.style.opacity = "1";
-          row.style.transform = "none";
-        };
-        const wrap = () => {
-          let guard = 0;
-          while (guard++ < 50) {
-            const first = track.firstElementChild;
-            const h = first.offsetHeight || 1;
-            if (offset >= h) {
-              settle(first);
-              track.appendChild(first);
-              offset -= h;
-            } else if (offset < 0) {
-              const tail = track.lastElementChild;
-              settle(tail);
-              track.insertBefore(tail, track.firstElementChild);
-              offset += tail.offsetHeight || 1;
-            } else break;
-          }
-        };
-        const paint = () => {
-          track.style.transform = "translate3d(0," + (-offset) + "px,0)";
-        };
-
-        const hold = () => {
-          boardHold = true;
-          clearTimeout(boardTimer);
-        };
-        const release = (e) => {
-          dragging = false;
-          if (e.pointerType === "mouse") return;
-          clearTimeout(boardTimer);
-          boardTimer = setTimeout(() => { boardHold = false; }, 4000);
-        };
-
-        box.onpointerdown = (e) => {
-          hold();
-          dragging = true;
-          lastY = e.clientY;
-          try { box.setPointerCapture(e.pointerId); } catch (_) {}
-        };
-        box.onpointermove = (e) => {
-          if (!dragging) return;
-          offset += lastY - e.clientY;
-          lastY = e.clientY;
-          wrap();
-          paint();
-        };
-        box.onpointerup = release;
-        box.onpointercancel = release;
-
-        const canHover = window.matchMedia("(hover: hover)").matches;
-        box.onwheel = (e) => {
-          e.preventDefault();
-          hold();
-          offset += e.deltaY;
-          wrap();
-          paint();
-          if (!canHover) {
-            boardTimer = setTimeout(() => { boardHold = false; }, 4000);
-          }
-        };
-        box.onpointerenter = (e) => { if (e.pointerType === "mouse") hold(); };
-        box.onpointerleave = (e) => {
-          if (e.pointerType === "mouse") { clearTimeout(boardTimer); boardHold = false; }
-        };
-
-        const step = (ts) => {
-          if (!document.getElementById("board").classList.contains("on")) {
-            last = 0;
-            boardTick = requestAnimationFrame(step);
-            return;
-          }
-          const dt = last ? Math.min(ts - last, 50) : 16;
-          last = ts;
-          if (!boardHold && track.firstElementChild) {
-            offset += dt * 0.036;
-            wrap();
-            paint();
-          }
-          boardTick = requestAnimationFrame(step);
-        };
-        boardTick = requestAnimationFrame(step);
+      function cleanEmail(raw) {
+        const email = String(raw || "").trim().toLowerCase();
+        if (!/^[^\s@]+@miva\.edu\.ng$/.test(email)) return "";
+        return email;
       }
-
-      function esc(s) {
-        return String(s || "").replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+      function cleanPhone(raw) {
+        const s = String(raw || "").trim();
+        if (!s) return "";
+        const digits = s.replace(/\D/g, "");
+        if (/^0[789][01]\d{8}$/.test(digits)) return "+234" + digits.slice(1);
+        if (/^234[789][01]\d{8}$/.test(digits)) return "+" + digits;
+        if (s.trim().startsWith("+") && digits.length >= 8 && digits.length <= 15) return "+" + digits;
+        return "";
       }
-      function clock12(iso) {
-        const d = new Date(iso);
-        if (!iso || Number.isNaN(d.getTime())) return "";
-        return new Intl.DateTimeFormat("en-US", {
-          hour: "numeric", minute: "2-digit", hour12: true, timeZone: "Africa/Lagos"
-        }).format(d);
-      }
-      function bareName(name) {
-        return String(name || "").replace(/\s·\s\d{1,2}:\d{2}\s?[AP]M$/i, "");
-      }
-
-      async function loadBoard() {
-        const list = document.getElementById("boardList");
-        const msg = document.getElementById("boardMsg");
-        list.innerHTML = '<p class="empty">Loading board…</p>';
-        msg.textContent = "";
-        try {
-          const res = await fetch(SCRIPT_URL, {
-            method: "POST",
-            body: JSON.stringify({ action: "leaderboard" })
-          });
-          const data = await res.json();
-          if (!data.ok) {
-            msg.className = "msg bad";
-            msg.textContent = data.error || "Could not load leaderboard.";
-            list.innerHTML = '<p class="empty">Board unavailable.</p>';
-            return;
-          }
-          const rows = (data.rows || []).filter((r) => String(r.name || "").trim());
-          rows.sort((a, b) => {
-            const checks = Number(b.checks || 0) - Number(a.checks || 0);
-            if (checks) return checks;
-            if (a.today && b.today && a.today !== b.today) return a.today < b.today ? -1 : 1;
-            if (a.today && !b.today) return -1;
-            if (!a.today && b.today) return 1;
-            return 0;
-          });
-          if (!rows.length) {
-            list.className = "track";
-            list.innerHTML = '<p class="empty">Nobody on the board yet.</p>';
-            return;
-          }
-          const html = rows.map((r, i) => {
-            const live = Number(r.streak || 0);
-            const ended = Number(r.ended || 0);
-            const fire = live > 1 ? ' <span class="fire" aria-label="streak">🔥</span>' : '';
-            const streakLine = live > 1
-              ? '<span class="streak">' + live + ' day streak</span>'
-              : (ended > 1 ? '<span class="streak ended">Streak ended</span>' : '');
-            return '<div class="row' + (i === 0 ? ' top' : '') + '" style="animation-delay:' + (i % 20) * 0.06 + 's">' +
-              '<div class="rank">' + String(i + 1).padStart(2, "0") + '.</div>' +
-              '<div class="who"><div class="name">' + esc(r.name) + fire + '</div>' +
-              streakLine +
-              '</div>' +
-              '<div class="count">' + Number(r.checks || 0) + '<small>checks</small></div>' +
-            '</div>';
-          }).join("");
-          list.className = "track";
-          list.innerHTML = html;
-          watchBoardScroll();
-          const feels = (data.feelings || []).filter((f) => f.name && f.note);
-          feels.sort((a, b) => String(b.at || "").localeCompare(String(a.at || "")));
-          const feelBox = document.getElementById("feelList");
-          if (feelBox) {
-            feelBox.innerHTML = feels.length
-              ? feels.map((f, i) => {
-                  const when = clock12(f.at);
-                  return '<div class="feel-item" style="animation-delay:' + (0.12 + i * 0.1) + 's"><strong>' +
-                    esc(bareName(f.name)) + '</strong>' +
-                    (when ? '<div class="when">' + esc(when) + '</div>' : '') +
-                    '<span>' + esc(f.note) + '</span></div>';
-                }).join("")
-              : '<p class="empty">No feelings to show</p>';
-          }
-        } catch (err) {
-          msg.className = "msg bad";
-          msg.textContent = "Could not reach the Sheet.";
-          list.innerHTML = '<p class="empty">Board offline.</p>';
+      const gmsg = document.getElementById("genderMsg");
+      document.getElementById("gender").addEventListener("change", () => {
+        if (document.getElementById("gender").value === "Mustard") {
+          gmsg.className = "msg bad";
+          gmsg.textContent = "See as you dey do. Select your gender, joor.";
+        } else {
+          gmsg.className = "msg";
+          gmsg.textContent = "";
         }
-      }
-    })();
-  </script>
-</body>
-</html>
+      });
+      document.getElementById("regForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const msg = document.getElementById("regMsg");
+        const btn = document.getElementById("regBtn");
+        const name = document.getElementById("name").value.trim();
+        const email = cleanEmail(document.getElementById("email").value);
+        const phone = cleanPhone(document.getElementById("phone").value);
+        const gender = document.getElementById("gender").value;
+        const secret = document.getElementById("secret").value.trim();
+        if (name.length < 2) {
+          msg.className = "msg bad";
+          msg.textContent = "Enter your preferred name.";
+          return;
+        }
+        if (!email) {
+          msg.className = "msg bad";
+          msg.textContent = "Use your school email, like chikamso@miva.edu.ng.";
+          return;
+        }
+        if (!phone) {
+          msg.className = "msg bad";
+          msg.textContent = "Start with your country code, like +234 801 000 0000.";
+          return;
+        }
+        if (gender === "Mustard") {
+          gmsg.className = "msg bad";
+          gmsg.textContent = "See as you dey do. Select your gender, joor.";
+          return;
+        }
+        if (gender !== "Male" && gender !== "Female") {
+          gmsg.className = "msg bad";
+          gmsg.textContent = "
