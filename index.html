@@ -553,4 +553,304 @@
         }
         if (gender !== "Male" && gender !== "Female") {
           gmsg.className = "msg bad";
-          gmsg.textContent = "
+          gmsg.textContent = "Select male or female.";
+          return;
+        }
+        if (secret !== "Mustard") {
+          msg.className = "msg bad";
+          msg.textContent = "Wrong group secret.";
+          return;
+        }
+        document.getElementById("phone").value = phone;
+        document.getElementById("email").value = email;
+        btn.disabled = true;
+        msg.className = "msg";
+        msg.textContent = "Saving...";
+        try {
+          const res = await fetch(SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify({ action: "register", name: name, email: email, phone: phone, gender: gender, secret: secret })
+          });
+          const data = await res.json();
+          if (!data.ok || !data.pin) {
+            msg.className = "msg bad";
+            msg.textContent = data.error || "Could not save. Try again.";
+            btn.disabled = false;
+            return;
+          }
+          document.getElementById("who").textContent = name ? name + ", keep this safe." : "Keep this.";
+          document.getElementById("code").innerHTML = String(data.pin).split("").map((d) => "<b>" + d + "</b>").join("");
+          show("pinpage");
+        } catch (err) {
+          msg.className = "msg bad";
+          msg.textContent = "Could not reach the Sheet. Try again.";
+        }
+        btn.disabled = false;
+      });
+
+      document.getElementById("forgotForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const msg = document.getElementById("forgotMsg");
+        const btn = document.getElementById("forgotBtn");
+        const email = cleanEmail(document.getElementById("forgotEmail").value);
+        const secret = document.getElementById("forgotSecret").value.trim();
+        if (!email) {
+          msg.className = "msg bad";
+          msg.textContent = "Use your school email.";
+          return;
+        }
+        btn.disabled = true;
+        msg.className = "msg";
+        msg.textContent = "Looking…";
+        try {
+          const res = await fetch(SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify({ action: "forgot", email: email, secret: secret })
+          });
+          const data = await res.json();
+          if (!data.ok || !data.pin) {
+            msg.className = "msg bad";
+            msg.textContent = data.error || "Could not find that pin.";
+            btn.disabled = false;
+            return;
+          }
+          document.getElementById("who").textContent = data.name ? data.name + ", keep this safe." : "Keep this.";
+          document.getElementById("code").innerHTML = String(data.pin).split("").map((d) => "<b>" + d + "</b>").join("");
+          show("pinpage");
+        } catch (err) {
+          msg.className = "msg bad";
+          msg.textContent = "Could not reach the Sheet.";
+        }
+        btn.disabled = false;
+      });
+
+      document.getElementById("ticketForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const msg = document.getElementById("ticketMsg");
+        const btn = document.getElementById("ticketBtn");
+        const email = cleanEmail(document.getElementById("ticketEmail").value);
+        const problem = document.getElementById("ticketProblem").value.trim();
+        if (!email) {
+          msg.className = "msg bad";
+          msg.textContent = "Use your school email.";
+          return;
+        }
+        if (problem.length < 8) {
+          msg.className = "msg bad";
+          msg.textContent = "Write a short note about the problem.";
+          return;
+        }
+        btn.disabled = true;
+        msg.className = "msg";
+        msg.textContent = "Sending…";
+        try {
+          const res = await fetch(SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify({ action: "ticket", email: email, problem: problem })
+          });
+          const data = await res.json();
+          if (!data.ok) {
+            msg.className = "msg bad";
+            msg.textContent = data.error || "Could not send.";
+            btn.disabled = false;
+            return;
+          }
+          msg.className = "msg ok";
+          msg.textContent = "Note sent. We will look at it.";
+          document.getElementById("ticketProblem").value = "";
+        } catch (err) {
+          msg.className = "msg bad";
+          msg.textContent = "Could not reach the Sheet.";
+        }
+        btn.disabled = false;
+      });
+
+      let boardTimer = 0;
+      let boardHold = false;
+      let boardTick = 0;
+      function watchBoardScroll() {
+        const box = document.querySelector("#board .viewport");
+        const track = document.getElementById("boardList");
+        if (!box || !track) return;
+        if (boardTick) cancelAnimationFrame(boardTick);
+        track.style.transform = "none";
+        box.style.overflowY = "auto";
+        box.style.touchAction = "";
+        box.scrollTop = 0;
+        if (!track.children.length) return;
+        const maxH = Math.max(...[...track.children].map((r) => r.offsetHeight || 1));
+        if (track.offsetHeight - box.clientHeight < maxH) return;
+        box.style.overflowY = "hidden";
+        box.style.touchAction = "none";
+        let offset = 0, last = 0;
+        let dragging = false, lastY = 0;
+        const settle = (row) => {
+          row.style.animation = "none";
+          row.style.opacity = "1";
+          row.style.transform = "none";
+        };
+        const wrap = () => {
+          let guard = 0;
+          while (guard++ < 50) {
+            const first = track.firstElementChild;
+            const h = first.offsetHeight || 1;
+            if (offset >= h) {
+              settle(first);
+              track.appendChild(first);
+              offset -= h;
+            } else if (offset < 0) {
+              const tail = track.lastElementChild;
+              settle(tail);
+              track.insertBefore(tail, track.firstElementChild);
+              offset += tail.offsetHeight || 1;
+            } else break;
+          }
+        };
+        const paint = () => {
+          track.style.transform = "translate3d(0," + (-offset) + "px,0)";
+        };
+        const hold = () => {
+          boardHold = true;
+          clearTimeout(boardTimer);
+        };
+        const release = (e) => {
+          dragging = false;
+          if (e.pointerType === "mouse") return;
+          clearTimeout(boardTimer);
+          boardTimer = setTimeout(() => { boardHold = false; }, 4000);
+        };
+        box.onpointerdown = (e) => {
+          hold();
+          dragging = true;
+          lastY = e.clientY;
+          try { box.setPointerCapture(e.pointerId); } catch (_) {}
+        };
+        box.onpointermove = (e) => {
+          if (!dragging) return;
+          offset += lastY - e.clientY;
+          lastY = e.clientY;
+          wrap();
+          paint();
+        };
+        box.onpointerup = release;
+        box.onpointercancel = release;
+        const canHover = window.matchMedia("(hover: hover)").matches;
+        box.onwheel = (e) => {
+          e.preventDefault();
+          hold();
+          offset += e.deltaY;
+          wrap();
+          paint();
+          if (!canHover) {
+            boardTimer = setTimeout(() => { boardHold = false; }, 4000);
+          }
+        };
+        box.onpointerenter = (e) => { if (e.pointerType === "mouse") hold(); };
+        box.onpointerleave = (e) => {
+          if (e.pointerType === "mouse") { clearTimeout(boardTimer); boardHold = false; }
+        };
+        const step = (ts) => {
+          if (!document.getElementById("board").classList.contains("on")) {
+            last = 0;
+            boardTick = requestAnimationFrame(step);
+            return;
+          }
+          const dt = last ? Math.min(ts - last, 50) : 16;
+          last = ts;
+          if (!boardHold && track.firstElementChild) {
+            offset += dt * 0.036;
+            wrap();
+            paint();
+          }
+          boardTick = requestAnimationFrame(step);
+        };
+        boardTick = requestAnimationFrame(step);
+      }
+
+      function esc(s) {
+        return String(s || "").replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+      }
+      function clock12(iso) {
+        const d = new Date(iso);
+        if (!iso || Number.isNaN(d.getTime())) return "";
+        return new Intl.DateTimeFormat("en-US", {
+          hour: "numeric", minute: "2-digit", hour12: true, timeZone: "Africa/Lagos"
+        }).format(d);
+      }
+      function bareName(name) {
+        return String(name || "").replace(/\s·\s\d{1,2}:\d{2}\s?[AP]M$/i, "");
+      }
+
+      async function loadBoard() {
+        const list = document.getElementById("boardList");
+        const msg = document.getElementById("boardMsg");
+        list.innerHTML = '<p class="empty">Loading board…</p>';
+        msg.textContent = "";
+        try {
+          const res = await fetch(SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify({ action: "leaderboard" })
+          });
+          const data = await res.json();
+          if (!data.ok) {
+            msg.className = "msg bad";
+            msg.textContent = data.error || "Could not load leaderboard.";
+            list.innerHTML = '<p class="empty">Board unavailable.</p>';
+            return;
+          }
+          const rows = (data.rows || []).filter((r) => String(r.name || "").trim());
+          rows.sort((a, b) => {
+            const checks = Number(b.checks || 0) - Number(a.checks || 0);
+            if (checks) return checks;
+            if (a.today && b.today && a.today !== b.today) return a.today < b.today ? -1 : 1;
+            if (a.today && !b.today) return -1;
+            if (!a.today && b.today) return 1;
+            return 0;
+          });
+          if (!rows.length) {
+            list.className = "track";
+            list.innerHTML = '<p class="empty">Nobody on the board yet.</p>';
+            return;
+          }
+          const html = rows.map((r, i) => {
+            const live = Number(r.streak || 0);
+            const ended = Number(r.ended || 0);
+            const fire = live > 1 ? ' <span class="fire" aria-label="streak">🔥</span>' : '';
+            const streakLine = live > 1
+              ? '<span class="streak">' + live + ' day streak</span>'
+              : (ended > 1 ? '<span class="streak ended">Streak ended</span>' : '');
+            return '<div class="row' + (i === 0 ? ' top' : '') + '" style="animation-delay:' + (i % 20) * 0.06 + 's">' +
+              '<div class="rank">' + String(i + 1).padStart(2, "0") + '.</div>' +
+              '<div class="who"><div class="name">' + esc(r.name) + fire + '</div>' +
+              streakLine +
+              '</div>' +
+              '<div class="count">' + Number(r.checks || 0) + '<small>checks</small></div>' +
+            '</div>';
+          }).join("");
+          list.className = "track";
+          list.innerHTML = html;
+          watchBoardScroll();
+          const feels = (data.feelings || []).filter((f) => f.name && f.note);
+          feels.sort((a, b) => String(b.at || "").localeCompare(String(a.at || "")));
+          const feelBox = document.getElementById("feelList");
+          if (feelBox) {
+            feelBox.innerHTML = feels.length
+              ? feels.map((f, i) => {
+                  const when = clock12(f.at);
+                  return '<div class="feel-item" style="animation-delay:' + (0.12 + i * 0.1) + 's"><strong>' +
+                    esc(bareName(f.name)) + '</strong>' +
+                    (when ? '<div class="when">' + esc(when) + '</div>' : '') +
+                    '<span>' + esc(f.note) + '</span></div>';
+                }).join("")
+              : '<p class="empty">No feelings to show</p>';
+          }
+        } catch (err) {
+          msg.className = "msg bad";
+          msg.textContent = "Could not reach the Sheet.";
+          list.innerHTML = '<p class="empty">Board offline.</p>';
+        }
+      }
+    })();
+  </script>
+</body>
+</html>
