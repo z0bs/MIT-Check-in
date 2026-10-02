@@ -167,10 +167,10 @@
       max-height: min(62vh, 520px); overflow-y: auto; overflow-x: hidden;
       padding-right: 10px; scrollbar-width: none;
     }
-    .viewport:hover { scrollbar-width: thin; scrollbar-color: rgba(28,23,19,.22) transparent; }
+    .viewport:hover, .viewport.touched { scrollbar-width: thin; scrollbar-color: rgba(28,23,19,.22) transparent; }
     .viewport:active { cursor: grabbing; }
     .viewport::-webkit-scrollbar { width: 0; }
-    .viewport:hover::-webkit-scrollbar { width: 6px; }
+    .viewport:hover::-webkit-scrollbar, .viewport.touched::-webkit-scrollbar { width: 6px; }
     .viewport::-webkit-scrollbar-track { background: transparent; }
     .viewport::-webkit-scrollbar-thumb { background: rgba(28,23,19,.16); border-radius: 99px; }
     .viewport:hover::-webkit-scrollbar-thumb { background: rgba(28,23,19,.28); }
@@ -189,6 +189,8 @@
     .who { text-align: left; }
     .name { font-weight: 400; font-size: 15px; }
     .streak { display: block; margin-top: 2px; font-size: 11px; color: var(--muted); font-weight: 400; }
+    .streak.ended { color: var(--bad); }
+    .fire { font-size: 14px; }
     .count { font-weight: 700; font-variant-numeric: tabular-nums; font-size: 16px; }
     .count small {
       display: block; font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
@@ -668,16 +670,23 @@
       let boardTick = 0;
       function watchBoardScroll() {
         const box = document.querySelector("#board .viewport");
-        if (!box) return;
+        const track = document.getElementById("boardList");
+        if (!box || !track) return;
+        const rows = [...track.children];
+        if (!rows.length) return;
+        const one = track.scrollHeight;
+        if (one <= box.clientHeight + 8) return;
+        track.append(...rows.map((row) => row.cloneNode(true)));
         box.scrollTop = 0;
         const pause = () => {
           boardHold = true;
           clearTimeout(boardTimer);
           boardTimer = setTimeout(() => { boardHold = false; }, 4000);
         };
+        const showBar = () => box.classList.add("touched");
         box.onwheel = pause;
-        box.ontouchstart = pause;
-        box.onpointerdown = pause;
+        box.ontouchstart = () => { showBar(); pause(); };
+        box.onpointerdown = () => { showBar(); pause(); };
         box.onmouseenter = () => { boardHold = true; };
         box.onmouseleave = () => { boardHold = false; };
         if (boardTick) cancelAnimationFrame(boardTick);
@@ -686,10 +695,9 @@
             boardTick = requestAnimationFrame(step);
             return;
           }
-          if (!boardHold && box.scrollHeight > box.clientHeight + 8) {
+          if (!boardHold) {
             box.scrollTop += 0.6;
-            const half = box.scrollHeight / 2;
-            if (half > 0 && box.scrollTop >= half) box.scrollTop -= half;
+            if (box.scrollTop >= one) box.scrollTop -= one;
           }
           boardTick = requestAnimationFrame(step);
         };
@@ -741,17 +749,24 @@
             list.innerHTML = '<p class="empty">Nobody on the board yet.</p>';
             return;
           }
-          const html = rows.map((r, i) => (
-            '<div class="row' + (i === 0 ? ' top' : '') + '" style="animation-delay:' + (i % 20) * 0.06 + 's">' +
+          const html = rows.map((r, i) => {
+            const live = Number(r.streak || 0);
+            const ended = Number(r.ended || 0);
+            const fire = live > 1 ? ' <span class="fire" aria-label="streak">🔥</span>' : '';
+            const streakLine = live > 1
+              ? '<span class="streak">' + live + ' day streak</span>'
+              : (ended > 1 ? '<span class="streak ended">Streak ended</span>' : '');
+            return '<div class="row' + (i === 0 ? ' top' : '') + '" style="animation-delay:' + (i % 20) * 0.06 + 's">' +
               '<div class="rank">' + String(i + 1).padStart(2, "0") + '.</div>' +
-              '<div class="who"><div class="name">' + esc(r.name) + '</div>' +
-              (Number(r.streak || 0) > 1 ? '<span class="streak">' + Number(r.streak) + ' day streak</span>' : '') +
+              '<div class="who"><div class="name">' + esc(r.name) + fire + '</div>' +
+              streakLine +
               '</div>' +
               '<div class="count">' + Number(r.checks || 0) + '<small>checks</small></div>' +
-            '</div>'
-          )).join("");
+            '</div>';
+          }).join("");
           list.className = "track";
-          list.innerHTML = html + html;
+          list.innerHTML = html;
+          watchBoardScroll();
           const feels = (data.feelings || []).filter((f) => f.name && f.note);
           feels.sort((a, b) => String(b.at || "").localeCompare(String(a.at || "")));
           const feelBox = document.getElementById("feelList");
@@ -766,7 +781,6 @@
                 }).join("")
               : '<p class="empty">No feelings to show</p>';
           }
-          watchBoardScroll();
         } catch (err) {
           msg.className = "msg bad";
           msg.textContent = "Could not reach the Sheet.";
