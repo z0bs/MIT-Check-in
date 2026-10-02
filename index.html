@@ -672,7 +672,12 @@
         const box = document.querySelector("#board .viewport");
         const track = document.getElementById("boardList");
         if (!box || !track) return;
-        if (!track.children.length || track.scrollHeight <= box.clientHeight + 8) return;
+        if (boardTick) cancelAnimationFrame(boardTick);
+        if (!track.children.length) return;
+
+        const maxH = Math.max(...[...track.children].map((r) => r.offsetHeight || 1));
+        if (box.scrollHeight - box.clientHeight < maxH) return;
+
         box.scrollTop = 0;
         const pause = () => {
           boardHold = true;
@@ -683,19 +688,31 @@
         box.onwheel = pause;
         box.ontouchstart = () => { showBar(); pause(); };
         box.onpointerdown = () => { showBar(); pause(); };
-        box.onmouseenter = () => { boardHold = true; };
-        box.onmouseleave = () => { boardHold = false; };
-        if (boardTick) cancelAnimationFrame(boardTick);
-        const step = () => {
+        box.onpointerenter = (e) => { if (e.pointerType === "mouse") boardHold = true; };
+        box.onpointerleave = (e) => { if (e.pointerType === "mouse") boardHold = false; };
+
+        let acc = 0, last = 0;
+        const step = (ts) => {
           if (!document.getElementById("board").classList.contains("on")) {
+            last = 0;
             boardTick = requestAnimationFrame(step);
             return;
           }
+          const dt = last ? Math.min(ts - last, 50) : 16;
+          last = ts;
           if (!boardHold && track.firstElementChild) {
+            acc += dt * 0.036;
+            const whole = Math.floor(acc);
+            if (whole >= 1) {
+              acc -= whole;
+              box.scrollTop += whole;
+            }
             const first = track.firstElementChild;
             const h = first.offsetHeight || 1;
-            box.scrollTop += 0.6;
             if (box.scrollTop >= h) {
+              first.style.animation = "none";
+              first.style.opacity = "1";
+              first.style.transform = "none";
               box.scrollTop -= h;
               track.appendChild(first);
             }
