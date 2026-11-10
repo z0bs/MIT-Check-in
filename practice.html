@@ -97,7 +97,7 @@
     <section class="screen on" id="start">
       <p class="day">MIT CHECK-IN</p>
       <h1>Practice <em>questions</em>.</h1>
-      <p class="sub">Exam in bit. Mustard in a less.</p>
+      <p class="sub">Exam in bit. Mustard in less.</p>
       <p class="label">Course</p>
       <div class="chips" id="topicChips"></div>
       <div id="countBlock">
@@ -240,7 +240,7 @@
     function toReady() {
       const n = chosenCount();
       $("readyCourse").textContent = topic;
-      $("readyInfo").textContent = n + " question" + (n === 1 ? "" : "s") + ", picked at random. No stress. Well, small stress.";
+      $("readyInfo").textContent = n + " question" + (n === 1 ? "" : "s") + ", merliiinnn.";
       show("ready");
     }
     function begin() {
@@ -302,7 +302,7 @@
       $("rTopic").textContent = topic;
       $("scoreBig").textContent = right + " / " + deck.length;
       $("scorePct").textContent = pct + "%";
-      $("scoreNote").textContent = pct < 30 ? "Na wa for you ooo" : pct > 80 ? "MUSTAAAAAAAARRRDDD" : "Not bad, go again.";
+      $("scoreNote").textContent = pct < 30 ? "Na wa for you o" : pct > 80 ? "MUSTAAAAAAAARRRDDD" : "Lamine Yamal! Not bad, go again.";
       $("review").innerHTML = deck.map((q, i) => {
         const ok = answers[i] === q.answer;
         return '<div class="rv"><p><strong>' + (i + 1) + '. ' + esc(q.q) + '</strong></p>' +
