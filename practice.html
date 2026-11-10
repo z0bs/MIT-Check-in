@@ -97,7 +97,8 @@
     <section class="screen on" id="start">
       <p class="day">MIT CHECK-IN</p>
       <h1>Practice <em>questions</em>.</h1>
-      <p class="sub">Exam in a bit. Mustard in less.</p>
+      <p class="sub">Exam in bit. Mustard in a less.</p>
+      <p class="label">Course</p>
       <div class="chips" id="topicChips"></div>
       <div id="countBlock">
         <p class="label">How many questions? <span id="poolNote"></span></p>
@@ -108,7 +109,7 @@
         </div>
       </div>
       <p class="empty" id="emptyNote" hidden>No practice questions yet.</p>
-      <p class="empty" id="errNote" hidden>Could not load questions.</p>
+      <p class="empty" id="errNote" hidden>Could not load questions.json. Open this page from a web server (not as a file) with questions.json beside it.</p>
       <div class="stack">
         <button class="btn slim" id="startBtn">Start practice</button>
         <a class="alt" href="index.html">← Back to check-in</a>
@@ -169,7 +170,24 @@
        To add another course, add its name to COURSES and a matching key in the JSON.
        ====================================================================== */
     const QUESTIONS_URL = "questions.json";
-    const COURSES = ["MIT 8111", "MIT 8101"];
+    let COURSES = ["MIT 8101", "MIT 8113"]; // replaced by the course codes found in questions.json once loaded
+
+    // Converts questions.json (courses[] -> questions[] with options {a..d} and a letter answer)
+    // into the shape the page uses: { "MIT 8101": [ {q, options:[...], answer:index, why}, ... ] }.
+    // The old flat format ({ "MIT 8101": [ {q, options:[], answer:n} ] }) is still accepted.
+    function normalise(data) {
+      const out = {};
+      if (data && Array.isArray(data.courses)) {
+        data.courses.forEach((c) => {
+          out[c.course_code] = (c.questions || []).map((x) => {
+            const keys = Object.keys(x.options || {}).sort();
+            return { q: x.question, options: keys.map((k) => x.options[k]), answer: keys.indexOf(String(x.answer).toLowerCase()), why: x.explanation || "" };
+          });
+        });
+        return out;
+      }
+      return data || {};
+    }
 
     const $ = (id) => document.getElementById(id);
     const screens = ["start", "ready", "quiz", "result"];
@@ -222,7 +240,7 @@
     function toReady() {
       const n = chosenCount();
       $("readyCourse").textContent = topic;
-      $("readyInfo").textContent = n + " question" + (n === 1 ? "" : "s") + ", let's go merliiinnnn.";
+      $("readyInfo").textContent = n + " question" + (n === 1 ? "" : "s") + ", picked at random. No stress. Well, small stress.";
       show("ready");
     }
     function begin() {
@@ -284,7 +302,7 @@
       $("rTopic").textContent = topic;
       $("scoreBig").textContent = right + " / " + deck.length;
       $("scorePct").textContent = pct + "%";
-      $("scoreNote").textContent = pct < 30 ? "Na wa for you o" : pct > 80 ? "MUSTAAAAAAAARRRDDD" : "Not bad, go again.";
+      $("scoreNote").textContent = pct < 30 ? "Na wa for you ooo" : pct > 80 ? "MUSTAAAAAAAARRRDDD" : "Not bad, go again.";
       $("review").innerHTML = deck.map((q, i) => {
         const ok = answers[i] === q.answer;
         return '<div class="rv"><p><strong>' + (i + 1) + '. ' + esc(q.q) + '</strong></p>' +
@@ -304,7 +322,12 @@
     buildStart();
     fetch(QUESTIONS_URL, { cache: "no-store" })
       .then((r) => { if (!r.ok) throw 0; return r.json(); })
-      .then((data) => { bank = data || {}; buildStart(); })
+      .then((data) => {
+        bank = normalise(data);
+        COURSES = Object.keys(bank);
+        if (!COURSES.includes(topic)) topic = COURSES[0];
+        buildStart();
+      })
       .catch(() => { bank = {}; loadFailed = true; buildStart(); });
   </script>
 </body>
