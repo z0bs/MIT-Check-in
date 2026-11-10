@@ -339,6 +339,9 @@
       background: none; border: 0; padding: 0; color: var(--muted);
       font: 400 14px Outfit, sans-serif; text-decoration: none; cursor: pointer;
     }
+    .links1 { display: flex; justify-content: center; align-items: center; gap: 22px; width: 100%; margin-top: 26px; }
+    .links1 .alt { width: auto; margin-top: 0; }
+    .links2 { margin-top: 30px !important; }
     .btn.slim { width: min(260px, 78%); }
     @media (prefers-reduced-motion: reduce) {
       .lock.open .shackle, .lock.closing .shackle { animation-duration: .01s; }
@@ -383,6 +386,7 @@
                     <stop offset=".6" stop-color="#d2ae7e"/><stop offset="1" stop-color="#a98258"/>
                   </linearGradient>
                 </defs>
+                
                 <path d="M5 52 V31 a26 26 0 0 1 52 0 V52" fill="none" stroke="url(#sg)" stroke-width="9"/>
                 <path d="M9 52 V31 a22 22 0 0 1 44 0 V52" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.2"/>
               </svg>
@@ -390,6 +394,7 @@
             <div class="rabbit" aria-hidden="true">
               <svg viewBox="0 0 60 70">
                 <defs><linearGradient id="rf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbf4e8"/><stop offset="1" stop-color="#e7d8c1"/></linearGradient></defs>
+                
                 <g stroke="#a8906e" stroke-width=".9">
                   <ellipse cx="21" cy="19" rx="6.2" ry="17" transform="rotate(-9 21 19)" fill="url(#rf)"/>
                   <ellipse cx="39" cy="19" rx="6.2" ry="17" transform="rotate(9 39 19)" fill="url(#rf)"/>
@@ -422,6 +427,7 @@
           <div class="key" aria-hidden="true">
               <svg viewBox="0 0 26 12">
                 <defs><linearGradient id="kg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6e6c2"/><stop offset=".5" stop-color="#d2ae7e"/><stop offset="1" stop-color="#a98258"/></linearGradient></defs>
+                
                 <rect x="0" y="4.9" width="17" height="2.2" rx="1" fill="url(#kg)"/>
                 <rect x="2.2" y="7" width="2" height="2.6" fill="url(#kg)"/><rect x="5.4" y="7" width="2" height="1.8" fill="url(#kg)"/>
                 <circle cx="20.2" cy="6" r="5.4" fill="url(#kg)"/><circle cx="20.2" cy="6" r="2.4" fill="#e2cba8"/>
@@ -437,8 +443,10 @@
         </div>
         <div class="stack">
           <button class="btn slim" type="submit" id="checkBtn"><span class="spin" aria-hidden="true"></span><span class="lbl">MIT check-in</span></button>
-          <button class="alt" type="button" data-go="register">New here? <u>Get a pin</u></button>
-          <button class="alt" type="button" data-go="help">Lost pin?</button>
+          <div class="links1">
+            <button class="alt" type="button" data-go="register">New here? <u>Get a pin</u></button>
+            <button class="alt" type="button" data-go="help">Lost pin?</button>
+          </div>
           <div class="links2">
             <a href="practice.html">← practice questions</a>
             <button type="button" data-go="board">leaderboard →</button>
