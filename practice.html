@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <title>Practice questions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#e2cba8; --ink:#1c1713; --muted:#6b6258; --gold:#c9a15b; --cream:#e8d7b8; --ok:#2d4a3c; --bad:#7a3228; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      min-height: 100svh; display: flex; flex-direction: column; align-items: center;
+      background-color: var(--bg);
+      background-image: radial-gradient(rgba(28,23,19,.07) 1px, transparent 1.2px);
+      background-size: 18px 18px; color: var(--ink);
+      font-family: Outfit, system-ui, sans-serif; overflow-x: hidden;
+    }
+    .blob { position: fixed; pointer-events: none; z-index: 0; }
+    .blob.a { width:180px; height:180px; right:-70px; top:12%; background:#c9a15b; opacity:.2; border-radius:62% 38% 55% 45% / 48% 58% 42% 52%; }
+    .blob.b { width:140px; height:120px; left:-60px; bottom:18%; background:#7a4a3a; opacity:.14; border-radius:48% 52% 40% 60% / 60% 40% 60% 40%; }
+    body::after {
+      content:""; position: fixed; left:0; right:0; bottom:0; height:22px; pointer-events:none;
+      background: repeating-linear-gradient(90deg, rgba(28,23,19,.2) 0 3px, transparent 3px 12px);
+    }
+    .wrap { position: relative; z-index: 1; width: min(440px, calc(100% - 36px)); margin: auto; padding: 32px 0 60px; }
+    .screen { display: none; text-align: center; }
+    .screen.on { display: block; }
+    .day { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin: 0 0 16px; }
+    h1 { font-size: clamp(28px, 8vw, 40px); font-weight: 700; line-height: 1.2; margin: 0 0 12px; }
+    h1 em { font-style: normal; box-shadow: inset 0 -8px 0 var(--gold); }
+    .sub { color: var(--muted); margin: 0 0 22px; font-size: 15px; }
+    .btn {
+      border: 0; color: var(--cream); font: 600 13px Outfit, sans-serif; letter-spacing: .16em;
+      text-transform: uppercase; padding: 15px 24px; border-radius: 999px; cursor: pointer;
+      background:
+        radial-gradient(circle at 18% 40%, rgba(255,255,255,.2) 0 4px, transparent 5px),
+        radial-gradient(circle at 82% 60%, rgba(255,255,255,.14) 0 3px, transparent 4px),
+        repeating-linear-gradient(-28deg, rgba(255,255,255,.08) 0 2px, transparent 2px 7px), #1c1713;
+    }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+    .btn.slim { width: min(260px, 80%); }
+    .alt { display: block; margin: 18px auto 0; background: none; border: 0; color: var(--muted); font: 400 14px Outfit, sans-serif; cursor: pointer; text-decoration: none; }
+    .alt u { text-underline-offset: 3px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 0 0 22px; }
+    .chip {
+      border: 1px solid rgba(28,23,19,.28); background: var(--cream); color: var(--ink);
+      font: 500 14px Outfit, sans-serif; padding: 9px 16px; border-radius: 999px; cursor: pointer;
+    }
+    .chip.on { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+    .label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+    .bar { height: 4px; border-radius: 99px; background: rgba(28,23,19,.14); margin: 0 0 22px; overflow: hidden; }
+    .bar i { display: block; height: 100%; width: 0; background: var(--ink); transition: width .3s ease; }
+    .qmeta { display: flex; justify-content: space-between; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+    .q { font-size: 20px; font-weight: 600; line-height: 1.35; text-align: left; margin: 0 0 20px; }
+    .opts { display: flex; flex-direction: column; gap: 10px; text-align: left; }
+    .opt {
+      display: flex; gap: 12px; align-items: flex-start; width: 100%;
+      border: 1px solid rgba(28,23,19,.28); background: var(--cream); color: var(--ink);
+      font: 400 15px/1.35 Outfit, sans-serif; padding: 13px 14px; border-radius: 16px; cursor: pointer; text-align: left;
+    }
+    .opt b { font-weight: 700; flex: 0 0 18px; }
+    .opt.sel { outline: 2px solid var(--gold); }
+    .opt.right { background: #cfd9bd; border-color: var(--ok); }
+    .opt.wrong { background: #e5bfb0; border-color: var(--bad); }
+    .opt:disabled { cursor: default; }
+    .why { text-align: left; margin: 16px 0 0; padding: 12px 14px; border-radius: 14px; background: rgba(255,255,255,.28); font-size: 14px; color: var(--muted); line-height: 1.45; }
+    .why strong { color: var(--ink); }
+    .score { font-size: 64px; font-weight: 700; margin: 6px 0 4px; font-variant-numeric: tabular-nums; }
+    .review { text-align: left; margin-top: 26px; }
+    .rv { padding: 12px 0; border-bottom: 1px solid rgba(28,23,19,.2); font-size: 14px; }
+    .rv:last-child { border-bottom: 0; }
+    .rv p { margin: 0 0 4px; }
+    .rv .ok { color: var(--ok); } .rv .bad { color: var(--bad); }
+    .verdict { font-size: 26px; font-weight: 700; text-align: left; margin: 16px 0 0; letter-spacing: .01em; }
+    .verdict.ok { color: var(--ok); } .verdict.bad { color: var(--bad); }
+    .live { font-variant-numeric: tabular-nums; }
+    .empty { color: var(--muted); font-size: 16px; padding: 18px 0 8px; margin: 0; }
+    .big { font-size: clamp(22px, 7vw, 30px); font-weight: 700; line-height: 1.2; margin: 6px 0 22px; }
+    .customrow { display: flex; align-items: center; justify-content: center; gap: 10px; margin: -8px 0 22px; }
+    .customrow label { font-size: 13px; color: var(--muted); }
+    .customrow input {
+      width: 96px; border: 1px solid rgba(28,23,19,.28); background: var(--cream); color: var(--ink);
+      font: 600 16px Outfit, sans-serif; padding: 9px 12px; border-radius: 12px; text-align: center; appearance: textfield; -moz-appearance: textfield;
+    }
+    .customrow input:focus { outline: 2px solid var(--gold); }
+    .stack { display: flex; flex-direction: column; align-items: center; }
+  </style>
+</head>
+<body>
+  <div class="blob a"></div><div class="blob b"></div>
+  <div class="wrap">
+
+    <!-- 1. Start -->
+    <section class="screen on" id="start">
+      <p class="day">MIT CHECK-IN</p>
+      <h1>Practice <em>questions</em>.</h1>
+      <p class="sub">Exam in bit. Mustard in a less.</p>
+      <p class="label">Course</p>
+      <div class="chips" id="topicChips"></div>
+      <div id="countBlock">
+        <p class="label">How many questions? <span id="poolNote"></span></p>
+        <div class="chips" id="countChips"></div>
+        <div class="customrow">
+          <label for="customCount">or type a number</label>
+          <input id="customCount" type="number" inputmode="numeric" min="1" step="1" placeholder="e.g. 35">
+        </div>
+      </div>
+      <p class="empty" id="emptyNote" hidden>No practice questions yet.</p>
+      <p class="empty" id="errNote" hidden>Could not load questions.json. Open this page from a web server (not as a file) with questions.json beside it.</p>
+      <div class="stack">
+        <button class="btn slim" id="startBtn">Start practice</button>
+        <a class="alt" href="index.html">← Back to check-in</a>
+      </div>
+    </section>
+
+    <!-- 1b. Ready -->
+    <section class="screen" id="ready">
+      <p class="day" id="readyCourse"></p>
+      <h1>Ready<em>?</em></h1>
+      <p class="sub" id="readyInfo"></p>
+      <div class="stack">
+        <button class="btn slim" id="goBtn">Let's get it</button>
+        <button class="alt" id="readyBack">← Change settings</button>
+      </div>
+    </section>
+
+    <!-- 2. Question -->
+    <section class="screen" id="quiz">
+      <div class="bar"><i id="barFill"></i></div>
+      <p class="day" id="qTopic" style="margin-bottom:10px"></p>
+      <div class="qmeta"><span id="qCount"></span><span class="live" id="qScore"></span></div>
+      <p class="q" id="qText"></p>
+      <div class="opts" id="opts"></div>
+      <div class="verdict" id="verdict" hidden></div>
+      <div class="why" id="why" hidden></div>
+      <div class="stack" style="margin-top:24px">
+        <button class="btn slim" id="nextBtn" disabled>Next</button>
+        <button class="alt" id="quitBtn">Quit practice</button>
+      </div>
+    </section>
+
+    <!-- 3. Results -->
+    <section class="screen" id="result">
+      <p class="day" id="rTopic">Done</p>
+      <h1>Your <em>score</em>.</h1>
+      <div class="score" id="scoreBig"></div>
+      <p class="sub" id="scorePct" style="margin-bottom:8px"></p>
+      <p class="big" id="scoreNote"></p>
+      <div class="stack">
+        <button class="btn slim" id="againBtn">Try again</button>
+        <a class="alt" href="index.html">← Back to check-in</a>
+      </div>
+      <div class="review" id="review"></div>
+    </section>
+  </div>
+
+  <script>
+    /* ======================================================================
+       Questions live in questions.json (same folder). Format:
+       {
+         "MIT 8111": [
+           { "q": "Question text", "options": ["A","B","C","D"], "answer": 1, "why": "optional explanation" }
+         ],
+         "MIT 8101": [ ... ]
+       }
+       "answer" is the index of the correct option (0 = first option).
+       To add another course, add its name to COURSES and a matching key in the JSON.
+       ====================================================================== */
+    const QUESTIONS_URL = "questions.json";
+    const COURSES = ["MIT 8111", "MIT 8101"];
+
+    const $ = (id) => document.getElementById(id);
+    const screens = ["start", "ready", "quiz", "result"];
+    const show = (id) => { screens.forEach((s) => $(s).classList.toggle("on", s === id)); window.scrollTo(0, 0); };
+    const shuffle = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+    const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+    const valid = (q) => q && q.q && Array.isArray(q.options) && q.options.length >= 2 && Number.isInteger(q.answer) && q.answer >= 0 && q.answer < q.options.length;
+
+    let loadFailed = false, bank = {}, topic = COURSES[0], count = 5, deck = [], idx = 0, answers = [], locked = false;
+
+    function pool() { return Array.isArray(bank[topic]) ? bank[topic].filter(valid) : []; }
+
+    function chips(box, items, current, onPick) {
+      box.innerHTML = "";
+      items.forEach((it) => {
+        const b = document.createElement("button");
+        b.type = "button"; b.className = "chip" + (String(it) === String(current) ? " on" : ""); b.textContent = it;
+        b.onclick = () => { onPick(it); chips(box, items, it, onPick); };
+        box.appendChild(b);
+      });
+    }
+    function buildStart() {
+      chips($("topicChips"), COURSES, topic, (t) => { topic = t; buildCounts(); });
+      buildCounts();
+    }
+    function buildCounts() {
+      const max = pool().length;
+      const empty = max === 0;
+      $("countBlock").hidden = empty;
+      $("emptyNote").hidden = !(empty && !loadFailed);
+      $("errNote").hidden = !(empty && loadFailed);
+      $("startBtn").disabled = empty;
+      if (empty) return;
+      $("poolNote").textContent = "(" + max + " available)";
+      const opts = [10, 20, 30, 50, 75].filter((n) => n < max).concat([max]);
+      if (count > max) count = max;
+      if (!count || count < 1) count = opts[0];
+      chips($("countChips"), opts.map((n) => (n === max ? "All " + max : n)), count === max ? "All " + max : count, (n) => {
+        count = String(n).startsWith("All") ? max : Number(n);
+        $("customCount").value = "";
+      });
+    }
+    function chosenCount() {
+      const max = pool().length;
+      const custom = parseInt($("customCount").value, 10);
+      if (custom >= 1) return Math.min(custom, max);
+      return Math.min(count, max);
+    }
+
+    function toReady() {
+      const n = chosenCount();
+      $("readyCourse").textContent = topic;
+      $("readyInfo").textContent = n + " question" + (n === 1 ? "" : "s") + ", picked at random. No stress. Well, small stress.";
+      show("ready");
+    }
+    function begin() {
+      deck = shuffle(pool()).slice(0, chosenCount()).map((q) => ({ ...q, order: shuffle(q.options.map((_, i) => i)) }));
+      idx = 0; answers = [];
+      show("quiz"); renderQ();
+    }
+    function correctSoFar() { return deck.reduce((n, q, i) => n + (answers[i] === q.answer ? 1 : 0), 0); }
+    function liveScore() {
+      const done = answers.length;
+      const pct = done ? Math.round((correctSoFar() / done) * 100) : 0;
+      $("qScore").textContent = "Score " + correctSoFar() + "/" + done + " · " + pct + "%";
+    }
+    function renderQ() {
+      const q = deck[idx]; locked = false;
+      $("barFill").style.width = (idx / deck.length) * 100 + "%";
+      $("qTopic").textContent = topic;
+      $("qCount").textContent = "Question " + (idx + 1) + " of " + deck.length;
+      liveScore();
+      $("qText").textContent = q.q;
+      $("verdict").hidden = true; $("why").hidden = true;
+      $("nextBtn").disabled = true;
+      $("nextBtn").textContent = idx === deck.length - 1 ? "Finish" : "Next";
+      $("opts").innerHTML = "";
+      q.order.forEach((orig, pos) => {
+        const b = document.createElement("button");
+        b.type = "button"; b.className = "opt";
+        b.innerHTML = "<b>" + "ABCDEFGH"[pos] + ".</b><span>" + esc(q.options[orig]) + "</span>";
+        b.onclick = () => choose(orig);
+        $("opts").appendChild(b);
+      });
+    }
+    function choose(i) {
+      if (locked) return;
+      locked = true;
+      const q = deck[idx];
+      answers[idx] = i;
+      const ok = i === q.answer;
+      [...$("opts").children].forEach((b, k) => {
+        b.disabled = true;
+        const o = q.order[k];
+        if (o === q.answer) b.classList.add("right");
+        else if (o === i) b.classList.add("wrong");
+      });
+      const v = $("verdict");
+      v.className = "verdict " + (ok ? "ok" : "bad");
+      v.textContent = ok ? "Correct" : "Fail";
+      v.hidden = false;
+      if (q.why) { $("why").textContent = q.why; $("why").hidden = false; }
+      liveScore();
+      $("nextBtn").disabled = false;
+    }
+    function next() {
+      if (idx < deck.length - 1) { idx++; renderQ(); } else finish();
+    }
+    function finish() {
+      const right = correctSoFar();
+      const pct = Math.round((right / deck.length) * 100);
+      $("rTopic").textContent = topic;
+      $("scoreBig").textContent = right + " / " + deck.length;
+      $("scorePct").textContent = pct + "%";
+      $("scoreNote").textContent = pct < 30 ? "Na wa for you ooo" : pct > 80 ? "MUSTAAAAAAAARRRDDD" : "Not bad, go again.";
+      $("review").innerHTML = deck.map((q, i) => {
+        const ok = answers[i] === q.answer;
+        return '<div class="rv"><p><strong>' + (i + 1) + '. ' + esc(q.q) + '</strong></p>' +
+          '<p class="' + (ok ? "ok" : "bad") + '">' + (ok ? "Correct: " : "Fail: ") + esc(q.options[answers[i]]) + '</p>' +
+          (ok ? "" : '<p class="ok">Answer: ' + esc(q.options[q.answer]) + '</p>') + '</div>';
+      }).join("");
+      show("result");
+    }
+
+    $("startBtn").onclick = toReady;
+    $("goBtn").onclick = begin;
+    $("readyBack").onclick = () => show("start");
+    $("nextBtn").onclick = next;
+    $("quitBtn").onclick = () => show("start");
+    $("againBtn").onclick = () => { buildStart(); show("start"); };
+
+    buildStart();
+    fetch(QUESTIONS_URL, { cache: "no-store" })
+      .then((r) => { if (!r.ok) throw 0; return r.json(); })
+      .then((data) => { bank = data || {}; buildStart(); })
+      .catch(() => { bank = {}; loadFailed = true; buildStart(); });
+  </script>
+</body>
+</html>
