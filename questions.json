@@ -1,0 +1,864 @@
+{
+  "MIT 8111": [
+    {
+      "q": "Which IT management principle is most clearly demonstrated when a bank launches a mobile app to expand financial inclusion in rural areas?",
+      "options": ["Risk mitigation", "Strategic alignment", "Resource management", "Performance measurement"],
+      "answer": 1,
+      "why": "Strategic alignment ensures IT initiatives directly support broader business goals, such as market expansion and financial inclusion."
+    },
+    {
+      "q": "What is the primary purpose of the 'Controlling' function in IT management?",
+      "options": ["Setting long-term IT goals", "Hiring and training IT staff", "Monitoring performance and correcting deviations", "Organizing team structures"],
+      "answer": 2,
+      "why": "Controlling ensures plans are implemented correctly by monitoring performance and making necessary adjustments."
+    },
+    {
+      "q": "A company moves its legacy servers to AWS to handle rapid growth without buying new hardware. Which benefit of the cloud era is this?",
+      "options": ["Scalability", "Centralized computing", "Siloed systems", "Manual processing"],
+      "answer": 0,
+      "why": "Cloud computing provides scalability, allowing resources to expand elastically based on demand."
+    },
+    {
+      "q": "Which challenge is most associated with the mainframe era of enterprise IT?",
+      "options": ["Decentralized decision-making", "High accessibility for all staff", "Rigid and bureaucratic IT operations", "Low infrastructure costs"],
+      "answer": 2,
+      "why": "Mainframes were expensive, centralized, and led to rigid IT operations where access was limited to highly trained staff."
+    },
+    {
+      "q": "In the context of IT governance, what does COBIT primarily focus on?",
+      "options": ["Service desk operations", "Strategic alignment, compliance, and value delivery", "Software development lifecycles", "Hardware procurement"],
+      "answer": 1,
+      "why": "COBIT is a comprehensive framework focused on enterprise IT governance, risk management, and compliance."
+    },
+    {
+      "q": "Which IT governance framework is primarily operational and emphasizes continual service improvement?",
+      "options": ["ISO/IEC 27001", "COBIT", "ITIL", "GDPR"],
+      "answer": 2,
+      "why": "ITIL focuses on IT Service Management (ITSM) and delivering high-quality IT services aligned with business needs."
+    },
+    {
+      "q": "During a risk assessment, a team ranks a potential data breach as 'High Probability, High Impact'. According to a risk matrix, how should this be handled?",
+      "options": ["Accept the risk", "Monitor it regularly", "Immediate attention and mitigation", "Transfer it to a vendor"],
+      "answer": 2,
+      "why": "High risk (red zone) in a risk matrix requires immediate attention and mitigation strategies."
+    },
+    {
+      "q": "A fintech company uses data on customer spending habits to offer personalized loan amounts. Which 'moat' building capability is this?",
+      "options": ["Platform ecosystems", "Proprietary data ecosystems", "Intelligent automation", "Embedded digital culture"],
+      "answer": 1,
+      "why": "Proprietary data ecosystems are built by collecting and structuring unique data over time to deliver personalized insights that competitors cannot easily replicate."
+    },
+    {
+      "q": "What is the primary function of a service desk in IT Service Management (ITSM)?",
+      "options": ["Developing new software applications", "Managing the company's financial budget", "Acting as the central point of contact for users to log and resolve incidents", "Overseeing executive decision-making"],
+      "answer": 2,
+      "why": "The service desk is the frontline of IT support, acting as the central point of contact for users to report issues and request services."
+    },
+    {
+      "q": "A university wants to adopt a new student portal, but staff are resisting the change. Which change management framework focuses on 'Unfreeze, Change, Refreeze'?",
+      "options": ["Kotter's 8-Step Model", "ADKAR Model", "Lewin's Change Theory", "Waterfall Methodology"],
+      "answer": 2,
+      "why": "Kurt Lewin's Change Theory views change as a three-stage process: Unfreeze, Change, and Refreeze."
+    },
+    {
+      "q": "Which type of business continuity site is fully operational and ready for immediate failover?",
+      "options": ["Cold site", "Warm site", "Hot site", "Mobile site"],
+      "answer": 2,
+      "why": "A hot site is a fully equipped, duplicated facility with real-time data replication, allowing near-instant recovery."
+    },
+    {
+      "q": "When an organization implements ITIL v4, what does 'Service Design' primarily focus on?",
+      "options": ["Defining organizational goals", "Managing day-to-day operations", "Designing reliable and scalable IT services and processes", "Retiring old services"],
+      "answer": 2,
+      "why": "Service Design translates strategy into blueprints for service development, focusing on availability, capacity, and security."
+    },
+    {
+      "q": "A company uses a framework to measure performance across Financial, Customer, Internal Processes, and Learning & Growth perspectives. What is this called?",
+      "options": ["Porter's Five Forces", "Balanced Scorecard", "SWOT Analysis", "The Digital Maturity Model"],
+      "answer": 1,
+      "why": "The Balanced Scorecard is a strategic management tool that measures performance across these four specific perspectives."
+    },
+    {
+      "q": "What is the primary goal of 'IT Project Management'?",
+      "options": ["To increase the IT budget", "To apply knowledge and skills to meet project requirements within time and budget", "To replace manual processes", "To conduct routine server maintenance"],
+      "answer": 1,
+      "why": "IT Project Management involves planning, executing, and finalizing projects efficiently to meet specific requirements and constraints."
+    },
+    {
+      "q": "Which methodology uses a linear, sequential approach where each phase must be completed before the next begins?",
+      "options": ["Agile", "Scrum", "Waterfall", "Kanban"],
+      "answer": 2,
+      "why": "Waterfall methodology follows a strict linear sequence (Requirements, Design, Development, Testing, etc.)."
+    },
+    {
+      "q": "In Nigeria's NDPR, what right does a data subject have regarding their personal data?",
+      "options": ["To demand unlimited access to other users' data", "To request the deletion of their personal data", "To force a company to use open-source software", "To bypass multi-factor authentication"],
+      "answer": 1,
+      "why": "NDPR, similar to GDPR, grants data subjects the right to access, correct, and demand the deletion of their personal data."
+    },
+    {
+      "q": "A company experiences a prolonged system outage. Which Recovery Time Objective (RTO) would indicate the most critical need for recovery?",
+      "options": ["A 72-hour RTO", "A 24-hour RTO", "A 2-hour RTO", "A 2-week RTO"],
+      "answer": 2,
+      "why": "A shorter RTO indicates that the system is highly critical and must be restored very quickly."
+    },
+    {
+      "q": "What is a key characteristic of the 'Digital Ecosystem Era' of IT?",
+      "options": ["Standalone internal servers", "Open APIs and integration with third-party platforms", "Strictly top-down communication", "Batch processing of data"],
+      "answer": 1,
+      "why": "The digital ecosystem era is defined by interconnected platforms, open APIs, data sharing, and collaboration."
+    },
+    {
+      "q": "What does the 'Business Impact Analysis' (BIA) in a Business Continuity Plan do?",
+      "options": ["Determines the cost of IT hardware", "Identifies critical business functions and the impact of their disruption", "Calculates employee salaries", "Designs the company's marketing strategy"],
+      "answer": 1,
+      "why": "The BIA evaluates the financial, operational, and regulatory consequences of disrupting critical functions."
+    },
+    {
+      "q": "According to the Resource-Based View (RBV), a sustainable competitive advantage comes from resources that are:",
+      "options": ["Cheap and easily accessible", "Valuable, Rare, Inimitable, and Non-substitutable (VRIN)", "Shared across all competitors", "Only related to physical hardware"],
+      "answer": 1,
+      "why": "The RBV theory states that sustainable advantages come from VRIN resources."
+    },
+    {
+      "q": "Which of the following is a common cause of cultural resistance to IT change?",
+      "options": ["Too much training", "Perceived job insecurity and lack of understanding", "High budget allocation", "Lack of organizational hierarchy"],
+      "answer": 1,
+      "why": "Staff often resist change due to fear of job loss, unfamiliarity with new systems, or comfort with old routines."
+    },
+    {
+      "q": "In ITIL v4, which stage involves the day-to-day delivery and support of services?",
+      "options": ["Service Strategy", "Service Design", "Service Operation", "Continual Service Improvement"],
+      "answer": 2,
+      "why": "Service Operation focuses on managing the day-to-day IT operations, including incident and problem management."
+    },
+    {
+      "q": "What is the purpose of a Service Level Agreement (SLA)?",
+      "options": ["To outline internal team responsibilities", "To define the expected level of service between a provider and a customer", "To calculate the cost of cloud migration", "To replace the need for IT governance"],
+      "answer": 1,
+      "why": "An SLA is a formal agreement between a service provider and a customer that defines performance metrics and expectations."
+    },
+    {
+      "q": "Why does the ITIL framework recommend separating 'Incident Management' from 'Problem Management'?",
+      "options": ["To increase the workload for IT staff", "Because incidents are quick fixes, while problems focus on finding the root cause", "Because they use completely different software", "To avoid using the service desk"],
+      "answer": 1,
+      "why": "Incident management aims to restore service quickly, while problem management investigates the underlying root cause to prevent recurrence."
+    },
+    {
+      "q": "A Nigerian bank uses predictive analytics to offer targeted loans to farmers based on historical weather data and transaction history. This is an example of:",
+      "options": ["Operational efficiency", "Digital operational efficiency", "IT-led competitive advantage through differentiation", "Cost leadership"],
+      "answer": 2,
+      "why": "Using data to create personalized, unique offerings that competitors cannot easily match is a form of differentiation and competitive advantage."
+    },
+    {
+      "q": "Which framework is certifiable for an organization's Information Security Management System (ISMS)?",
+      "options": ["COBIT", "ITIL v4", "ISO/IEC 27001", "NIST SP 800-34"],
+      "answer": 2,
+      "why": "ISO/IEC 27001 provides a certifiable standard for establishing and maintaining an information security management system."
+    },
+    {
+      "q": "What is 'AIOps' in the context of modern IT operations?",
+      "options": ["Artificial Intelligence for IT Operations", "Automated Internet Operations", "Advanced Internal Operations", "Application Integration Operations"],
+      "answer": 0,
+      "why": "AIOps applies machine learning and data science to IT operations to automate anomaly detection and predictive analysis."
+    },
+    {
+      "q": "In a Change Management process, what is a 'Standard Change'?",
+      "options": ["A high-risk change requiring immediate board approval", "A pre-approved, low-risk, routine change", "A failed change that needs rollback", "A change that affects the entire enterprise"],
+      "answer": 1,
+      "why": "Standard changes are routine and low-risk, requiring minimal review and no CAB (Change Advisory Board) approval."
+    },
+    {
+      "q": "Which backup strategy involves keeping copies of data on local servers and in a remote cloud environment?",
+      "options": ["Onsite backup", "Offsite backup", "Hybrid backup", "Cold site backup"],
+      "answer": 2,
+      "why": "A hybrid backup combines local speed and control with the redundancy of cloud storage."
+    },
+    {
+      "q": "What is a primary risk of 'Technical Debt' in IT projects?",
+      "options": ["It reduces the initial cost of the project", "It makes the system easier to maintain in the future", "It creates fragile, poorly integrated systems that become expensive to maintain", "It automatically fixes all security vulnerabilities"],
+      "answer": 2,
+      "why": "Technical debt often results from rushed development, leading to complex, undocumented systems that are hard to maintain or upgrade."
+    },
+    {
+      "q": "In ITIL v4, what are the '7 Guiding Principles' used for?",
+      "options": ["Hiring new IT staff", "Ensuring flexibility and adaptability across all IT practices", "Calculating the ROI of IT projects", "Designing the company logo"],
+      "answer": 1,
+      "why": "The guiding principles (e.g., focus on value, start where you are) help organizations adapt ITIL to their specific needs."
+    },
+    {
+      "q": "Why is 'Strategic Alignment' essential for IT?",
+      "options": ["To ensure the IT department works in isolation", "To ensure technology investments directly support business goals", "To eliminate the need for IT governance", "To reduce the company's market share"],
+      "answer": 1,
+      "why": "Strategic alignment ensures that IT is not just a support function, but a driver of business growth and value."
+    },
+    {
+      "q": "Which of the following is a characteristic of the 'Client-Server Era' (1990s-2000s)?",
+      "options": ["Centralized mainframe computing", "Decentralized access to shared resources via LANs", "100% cloud-based infrastructure", "Widespread adoption of artificial intelligence"],
+      "answer": 1,
+      "why": "The client-server era decentralized IT, allowing departments to access shared resources via local area networks."
+    },
+    {
+      "q": "What is the primary role of the Change Advisory Board (CAB)?",
+      "options": ["To code new software applications", "To review, approve, and schedule changes to IT infrastructure", "To handle customer complaints", "To manage the company's social media accounts"],
+      "answer": 1,
+      "why": "The CAB reviews change requests, assesses risks, and approves or rejects changes to ensure stability."
+    },
+    {
+      "q": "A company uses RPA (Robotic Process Automation) to handle 10,000 invoice records in 10 minutes. What is this an example of?",
+      "options": ["Effectiveness", "Efficiency", "Strategic alignment", "Risk mitigation"],
+      "answer": 1,
+      "why": "Efficiency is about doing a task in the best possible way with the least waste of time and resources."
+    },
+    {
+      "q": "Under the NDPR, within how many hours must an organization report a data breach to NITDA?",
+      "options": ["24 hours", "48 hours", "72 hours", "1 week"],
+      "answer": 2,
+      "why": "The NDPR mandates that data breaches be reported to NITDA within 72 hours."
+    },
+    {
+      "q": "What is the primary objective of 'Project Monitoring and Control'?",
+      "options": ["To micromanage every employee", "To ensure the project stays on track, within scope, and on budget", "To increase the project's cost", "To eliminate the need for a project manager"],
+      "answer": 1,
+      "why": "Monitoring and control track progress against the plan and implement corrective actions when deviations occur."
+    },
+    {
+      "q": "In the context of digital transformation, what does 'operational efficiency' aim to achieve?",
+      "options": ["Increasing manual paperwork", "Doing tasks better with data, automation, and integration", "Hiring more staff for manual data entry", "Slowing down decision-making"],
+      "answer": 1,
+      "why": "Digital operational efficiency uses technology to reduce waste, speed up processes, and improve accuracy."
+    },
+    {
+      "q": "A company's IT strategy is misaligned with its business goals. What is a likely consequence?",
+      "options": ["The company will gain a competitive advantage", "Wasted resources and failed implementations", "The IT budget will shrink", "Employees will be highly motivated"],
+      "answer": 1,
+      "why": "Misalignment leads to wasted investments, duplicated efforts, and missed market opportunities."
+    },
+    {
+      "q": "Which type of risk arises from hardware malfunctions, software bugs, or human error?",
+      "options": ["Strategic risk", "Compliance risk", "Operational risk", "Cybersecurity risk"],
+      "answer": 2,
+      "why": "Operational risks are associated with the day-to-day functioning and failures of IT systems."
+    },
+    {
+      "q": "What is a 'Zero-Trust' security architecture?",
+      "options": ["Trusting all users inside the corporate network by default", "A model where no user or device is trusted until verified", "A system that requires no passwords", "A firewall that blocks all internet traffic"],
+      "answer": 1,
+      "why": "Zero-trust assumes no implicit trust, requiring continuous verification of users and devices."
+    },
+    {
+      "q": "In Agile methodology, what is a 'Sprint'?",
+      "options": ["A 6-month project phase", "A time-boxed iteration (usually 1-4 weeks) to deliver a product increment", "A meeting with the CEO", "A type of software bug"],
+      "answer": 1,
+      "why": "A sprint is a fixed period during which a specific set of tasks (from the product backlog) is completed."
+    },
+    {
+      "q": "What is the primary focus of ITIL v4's 'Continual Service Improvement' (CSI)?",
+      "options": ["Firing underperforming staff", "Using data and feedback to continuously improve IT services", "Buying new servers every month", "Eliminating the service desk"],
+      "answer": 1,
+      "why": "CSI is about constantly analyzing performance and user feedback to refine and improve IT services."
+    },
+    {
+      "q": "An organization implements a policy where employees must use Multi-Factor Authentication (MFA). Which principle is this enforcing?",
+      "options": ["Strategic alignment", "Access control and data protection", "Value delivery", "Resource management"],
+      "answer": 1,
+      "why": "MFA is a key component of access control, a technique used for policy enforcement and protecting sensitive data."
+    },
+    {
+      "q": "What does a 'Disaster Recovery Plan' (DRP) specifically focus on?",
+      "options": ["Restoring IT systems and data after a disaster", "Maintaining all business functions, including HR and Sales", "Preventing employees from leaving the company", "Marketing the company's new products"],
+      "answer": 0,
+      "why": "DRP is a technical plan focused specifically on restoring IT infrastructure and data within defined RTOs and RPOs."
+    },
+    {
+      "q": "In the context of IT management, what is a 'moat'?",
+      "options": ["A physical server room", "A unique, durable strength that protects a company from competitors", "A type of cybersecurity attack", "A legacy software system"],
+      "answer": 1,
+      "why": "A moat is a business strategy term for a sustainable competitive advantage that is hard for rivals to replicate."
+    },
+    {
+      "q": "Which type of change in IT is implemented immediately to resolve a critical issue or security threat?",
+      "options": ["Standard change", "Normal change", "Emergency change", "Planned change"],
+      "answer": 2,
+      "why": "Emergency changes are high-priority, expedited changes needed to restore critical services or fix urgent security flaws."
+    },
+    {
+      "q": "What is the purpose of a 'Cold Site' in Disaster Recovery?",
+      "options": ["A fully operational backup site with real-time data", "A basic facility with power and cooling but no pre-installed IT equipment", "A cloud-based backup service", "A mobile command center"],
+      "answer": 1,
+      "why": "A cold site is the cheapest option, requiring equipment to be shipped and configured during a disaster."
+    },
+    {
+      "q": "Why is 'Change Management' critical in IT environments?",
+      "options": ["To prevent any changes from ever happening", "To ensure modifications are implemented with minimal disruption and risk", "To increase the complexity of IT systems", "To bypass IT governance rules"],
+      "answer": 1,
+      "why": "Change management provides a structured process to assess, approve, and implement changes safely without causing outages."
+    },
+    {
+      "q": "What is the role of the 'Scrum Master' in an Agile project?",
+      "options": ["To make all business decisions", "To write all the code", "To facilitate the process, remove obstacles, and ensure Scrum practices are followed", "To manage the project budget"],
+      "answer": 2,
+      "why": "The Scrum Master acts as a servant-leader, helping the team follow Agile principles and removing blockers."
+    }
+  ],
+  "MIT 8101": [
+    {
+      "q": "According to MIT 8101, what are the five key functions of IT management?",
+      "options": ["Planning, Organizing, Staffing, Directing, Controlling", "Designing, Building, Testing, Deploying, Maintaining", "Budgeting, Hiring, Firing, Training, Evaluating", "Analyzing, Strategizing, Executing, Reviewing, Scaling"],
+      "answer": 0,
+      "why": "The fundamental functions of management applied to IT are Planning, Organizing, Staffing, Directing, and Controlling."
+    },
+    {
+      "q": "A university invests in new biometric attendance devices but fails to integrate them with employee records. Which IT principle was violated?",
+      "options": ["Value delivery", "Strategic alignment", "Risk management", "Resource management"],
+      "answer": 1,
+      "why": "Strategic alignment requires technology to directly support the organization's mission. Isolated data without integration lacks strategic use."
+    },
+    {
+      "q": "Which principle ensures that IT investments yield measurable returns, such as time saved or improved customer trust?",
+      "options": ["Resource management", "Performance measurement", "Value delivery", "Risk management"],
+      "answer": 2,
+      "why": "Value delivery ensures that every IT investment provides a real and traceable benefit to the business."
+    },
+    {
+      "q": "What is a common challenge in IT management specific to the Nigerian context?",
+      "options": ["Too much skilled talent", "Overly reliable infrastructure", "Infrastructure instability like unreliable electricity", "Excessive government funding"],
+      "answer": 2,
+      "why": "Infrastructure instability (power, internet) is a major challenge for IT management in Nigeria."
+    },
+    {
+      "q": "In the 'Evolution of Enterprise IT', which era introduced the concept of real-time data sharing and API-driven ecosystems?",
+      "options": ["Mainframe Era", "Client-Server Era", "Cloud and Mobile Era", "Digital Ecosystem Era"],
+      "answer": 3,
+      "why": "The Digital Ecosystem era is characterized by interconnected platforms, open APIs, and real-time data sharing."
+    },
+    {
+      "q": "According to the Resource-Based View (RBV), which of the following is an example of an IT-based 'VRIN' resource?",
+      "options": ["Buying a standard CRM software from a vendor", "Proprietary AI models trained on internal customer data", "Using free open-source tools", "A basic company website"],
+      "answer": 1,
+      "why": "VRIN resources are Valuable, Rare, Inimitable, and Non-substitutable. Custom AI models trained on unique data fit this description."
+    },
+    {
+      "q": "What is the primary objective of the 'Plan' phase in the BCP lifecycle?",
+      "options": ["To test the recovery plan", "To identify risks and prioritize high-impact threats", "To recover the IT systems", "To communicate with the media"],
+      "answer": 1,
+      "why": "The planning phase involves Risk Assessment and Business Impact Analysis to understand what needs to be protected."
+    },
+    {
+      "q": "A company uses a 'Warm Site' for disaster recovery. What is a key characteristic of this site?",
+      "options": ["It has no equipment at all", "It is fully operational with real-time replication", "It is partially equipped with hardware and periodically updated data", "It is located in the same building as the primary site"],
+      "answer": 2,
+      "why": "A warm site has some pre-installed hardware and data (updated periodically), allowing for recovery in hours to days."
+    },
+    {
+      "q": "In ITIL v4, what is a 'Service Value System' (SVS)?",
+      "options": ["A software platform for billing", "A holistic model that integrates governance, practices, and continual improvement", "A list of all IT employees", "A type of cybersecurity firewall"],
+      "answer": 1,
+      "why": "The SVS is the core of ITIL v4, showing how all components and activities work together to facilitate value creation."
+    },
+    {
+      "q": "Which framework focuses on establishing a formal Information Security Management System (ISMS)?",
+      "options": ["COBIT", "ISO/IEC 27001", "ITIL", "PMBOK"],
+      "answer": 1,
+      "why": "ISO/IEC 27001 is the international standard specifically for information security management systems."
+    },
+    {
+      "q": "A company decides to calculate the 'Cost per Transaction' and 'System Uptime'. Which IT principle are they applying?",
+      "options": ["Strategic alignment", "Performance measurement", "Resource management", "Risk mitigation"],
+      "answer": 1,
+      "why": "Performance measurement involves defining and tracking key metrics (KPIs) to assess IT efficiency and effectiveness."
+    },
+    {
+      "q": "What is a 'Digital Moat'?",
+      "options": ["A physical security barrier", "An interconnected system of technology, data, and culture that creates a sustainable advantage", "A type of database", "A marketing strategy"],
+      "answer": 1,
+      "why": "A digital moat is a self-reinforcing system (like platform ecosystems or proprietary data) that competitors cannot easily replicate."
+    },
+    {
+      "q": "Which type of IT risk is associated with failing to adhere to laws like NDPR or GDPR?",
+      "options": ["Operational risk", "Compliance risk", "Strategic risk", "Cybersecurity risk"],
+      "answer": 1,
+      "why": "Compliance risks occur when an organization fails to follow relevant laws, regulations, or internal policies."
+    },
+    {
+      "q": "In Change Management, what does the ADKAR model stand for?",
+      "options": ["Awareness, Desire, Knowledge, Ability, Reinforcement", "Analysis, Design, Knowledge, Action, Review", "Assess, Deploy, Keep, Adapt, Recover", "Agile, DevOps, Kanban, Agile, Risk"],
+      "answer": 0,
+      "why": "ADKAR is a goal-oriented change management model focusing on the individual change journey."
+    },
+    {
+      "q": "Which methodology involves a 'Product Owner' who manages a prioritized list of features called a 'Product Backlog'?",
+      "options": ["Waterfall", "Scrum", "PRINCE2", "Six Sigma"],
+      "answer": 1,
+      "why": "In Scrum, the Product Owner is responsible for maximizing the value of the product and managing the Product Backlog."
+    },
+    {
+      "q": "What is the purpose of the 'Recovery Point Objective' (RPO) in Business Continuity?",
+      "options": ["To determine how long a system can be down", "To define the maximum acceptable amount of data loss", "To calculate the cost of a new server", "To identify the root cause of a disaster"],
+      "answer": 1,
+      "why": "RPO measures the maximum acceptable amount of data loss, usually measured in time (e.g., 15 minutes of data loss)."
+    },
+    {
+      "q": "Why is 'Cultural Resistance' a major challenge in IT management?",
+      "options": ["Because all employees love new technology", "Because staff may fear unfamiliar processes or job insecurity", "Because IT systems are always perfect", "Because change is always cheap"],
+      "answer": 1,
+      "why": "Employees often resist digital tools due to fear, lack of training, or comfort with existing manual workflows."
+    },
+    {
+      "q": "In the context of ITIL, what is 'Incident Management' focused on?",
+      "options": ["Finding the root cause of a recurring issue", "Restoring normal service operations as quickly as possible", "Designing new IT services", "Managing the IT budget"],
+      "answer": 1,
+      "why": "Incident management aims to minimize the impact of disruptions by restoring service quickly, often using temporary workarounds."
+    },
+    {
+      "q": "What is a 'Platform Ecosystem' in the digital economy?",
+      "options": ["A physical office space for IT teams", "A network of organizations and developers that build on a shared platform (e.g., APIs)", "A type of cloud server", "An internal HR software"],
+      "answer": 1,
+      "why": "Platform ecosystems create dependency and network effects, as third parties build services on top of a core platform."
+    },
+    {
+      "q": "Which IT governance framework provides a high-level, principle-based approach designed for board members and executives?",
+      "options": ["COBIT", "ITIL", "ISO/IEC 38500", "ISO/IEC 27001"],
+      "answer": 2,
+      "why": "ISO/IEC 38500 is a strategic, principle-based standard specifically for the corporate governance of IT."
+    },
+    {
+      "q": "What is a 'Standard Change' in IT Change Management?",
+      "options": ["A high-risk change requiring full CAB review", "A pre-approved, low-risk, routine change", "An emergency fix for a cyberattack", "A change that affects the entire company"],
+      "answer": 1,
+      "why": "Standard changes are routine and low-risk, following a proven procedure and requiring minimal oversight."
+    },
+    {
+      "q": "Why does 'Digital Operational Efficiency' matter in emerging economies?",
+      "options": ["To increase manual paperwork", "To overcome logistical chaos and high costs with smarter, data-driven models", "To slow down business processes", "To avoid using the internet"],
+      "answer": 1,
+      "why": "Digital efficiency helps organizations in emerging markets leapfrog traditional infrastructure challenges by using agile, tech-driven solutions."
+    },
+    {
+      "q": "Which of the following is an example of 'Value Delivery' in IT?",
+      "options": ["Buying expensive software that no one uses", "A CRM system that increases revenue by 15% within six months", "Installing new servers for no specific reason", "Increasing the IT budget without results"],
+      "answer": 1,
+      "why": "Value delivery is about measurable returns, like increased revenue, time saved, or improved decision-making."
+    },
+    {
+      "q": "What is the role of 'Problem Management' in ITSM?",
+      "options": ["To restore service quickly", "To find the root cause of recurring incidents and eliminate them", "To design new software", "To handle customer billing issues"],
+      "answer": 1,
+      "why": "Problem management investigates the underlying causes of multiple incidents to prevent them from happening again."
+    },
+    {
+      "q": "In the context of risk management, what does 'Risk Transfer' mean?",
+      "options": ["Accepting the risk without action", "Eliminating the risk completely", "Shifting the risk to a third party, such as through insurance or outsourcing", "Ignoring the risk"],
+      "answer": 2,
+      "why": "Risk transfer involves shifting the financial impact of a risk to another party (e.g., cyber insurance)."
+    },
+    {
+      "q": "What is the 'Waterfall' methodology best suited for?",
+      "options": ["Projects with rapidly changing requirements", "Projects with clearly defined, fixed requirements and a need for strict documentation", "Small startup projects", "Projects that require daily customer feedback"],
+      "answer": 1,
+      "why": "Waterfall is ideal for projects where scope is stable and predictability/documentation are paramount."
+    },
+    {
+      "q": "Why is 'Stakeholder Management' critical in IT projects?",
+      "options": ["To ensure everyone gets a new laptop", "To align expectations, communicate effectively, and reduce resistance", "To increase the project's complexity", "To bypass the need for a project manager"],
+      "answer": 1,
+      "why": "Engaging stakeholders early and often ensures their needs are met and reduces the risk of project failure due to resistance."
+    },
+    {
+      "q": "What is a key feature of the 'Cloud and Mobile Era' of enterprise IT?",
+      "options": ["Centralized mainframe computing", "Pay-as-you-go computing resources and mobile-first users", "Standalone desktop computers", "No internet connectivity"],
+      "answer": 1,
+      "why": "The cloud and mobile era introduced scalable, pay-as-you-go cloud resources and ubiquitous mobile access."
+    },
+    {
+      "q": "What is the primary purpose of a 'Balanced Scorecard' for IT?",
+      "options": ["To measure financial performance only", "To measure performance across Financial, Customer, Internal Processes, and Learning/Growth", "To track employee attendance", "To design new software"],
+      "answer": 1,
+      "why": "The Balanced Scorecard provides a holistic view of IT performance across four key perspectives."
+    },
+    {
+      "q": "Which of the following is a 'Strategic Risk' for an IT project?",
+      "options": ["A server crashing", "Investing in a legacy system that hinders future digital transformation", "A data breach", "A software bug"],
+      "answer": 1,
+      "why": "Strategic risks occur when IT initiatives fail to align with business goals or compromise long-term competitiveness."
+    },
+    {
+      "q": "In ITIL v4, what is a 'Service Request'?",
+      "options": ["A report of a system failure", "A formal request from a user for something to be provided (e.g., password reset, new software)", "A major cyberattack", "A change to the IT budget"],
+      "answer": 1,
+      "why": "A service request is a user's routine request for information, advice, or a standard change (like access to an app)."
+    },
+    {
+      "q": "What is 'Technical Debt'?",
+      "options": ["Money owed to IT vendors", "The cost of maintaining legacy hardware", "The implied cost of rework caused by choosing an easy solution now instead of a better approach", "A type of bank loan for IT projects"],
+      "answer": 2,
+      "why": "Technical debt occurs when teams take shortcuts (e.g., quick fixes) that make future maintenance harder and more expensive."
+    },
+    {
+      "q": "Which regulatory framework requires organizations to protect the personal data of EU residents, impacting Nigerian businesses that serve EU customers?",
+      "options": ["NDPR", "HIPAA", "GDPR", "SOX"],
+      "answer": 2,
+      "why": "GDPR applies to any organization globally that processes the personal data of individuals in the EU."
+    },
+    {
+      "q": "What is 'AIOps'?",
+      "options": ["A cloud storage service", "Applying machine learning and AI to automate IT operations", "A type of firewall", "A project management methodology"],
+      "answer": 1,
+      "why": "AIOps uses AI and ML to enhance IT operations, such as predicting outages and automating responses."
+    },
+    {
+      "q": "In Change Management, what is a 'Normal Change'?",
+      "options": ["A routine change requiring no approval", "A change that must go through the full change management process, including CAB review", "A change to fix a critical outage", "A change to employee salaries"],
+      "answer": 1,
+      "why": "Normal changes are non-emergency, but require full impact assessment, risk evaluation, and CAB approval."
+    },
+    {
+      "q": "What is the primary goal of 'Enterprise Architecture'?",
+      "options": ["To make systems incompatible", "To ensure interoperability, scalability, and resilience of the IT ecosystem", "To reduce the number of IT staff", "To increase the cost of IT projects"],
+      "answer": 1,
+      "why": "Enterprise architecture designs the IT structure to ensure systems can talk to each other and scale with the business."
+    },
+    {
+      "q": "What is a 'Business Impact Analysis' (BIA)?",
+      "options": ["A report on employee productivity", "A process to identify and evaluate the effects of disruptions on critical operations", "A financial audit of the IT department", "A marketing strategy"],
+      "answer": 1,
+      "why": "BIA is a core part of BCP that determines which functions are critical and the impact of their downtime."
+    },
+    {
+      "q": "Which of the following is an example of 'Resource Management'?",
+      "options": ["Having multiple departments buy their own printers without oversight", "Centralizing IT procurement and sharing resources to avoid waste", "Increasing the IT budget", "Ignoring the need for staff training"],
+      "answer": 1,
+      "why": "Resource management ensures that IT assets (hardware, software, people) are used efficiently without duplication and waste."
+    },
+    {
+      "q": "Why is 'Change Management' particularly important in environments like fintech?",
+      "options": ["To slow down the development process", "To prevent service outages and security vulnerabilities during rapid digital transformation", "To avoid using the cloud", "To eliminate the need for IT governance"],
+      "answer": 1,
+      "why": "In fast-paced environments, uncontrolled changes can cause severe disruptions; change management ensures stability."
+    },
+    {
+      "q": "What is a 'Hot Site' in Disaster Recovery?",
+      "options": ["A basic facility with no equipment", "A partially equipped facility with daily backups", "A fully operational facility with real-time data replication and immediate failover", "A cloud storage solution"],
+      "answer": 2,
+      "why": "A hot site is the most expensive but reliable DR option, mirroring the primary site in real-time for near-zero downtime."
+    },
+    {
+      "q": "What is 'Strategic Alignment' in IT?",
+      "options": ["Making IT decisions in isolation", "Ensuring IT goals directly support the organization's mission and vision", "Reducing the IT budget", "Outsourcing all IT functions"],
+      "answer": 1,
+      "why": "Strategic alignment means IT exists to empower business goals, not just for its own sake."
+    },
+    {
+      "q": "Which framework focuses on IT Service Management and emphasizes continual improvement?",
+      "options": ["COBIT", "ITIL", "ISO 27001", "PRINCE2"],
+      "answer": 1,
+      "why": "ITIL is the most widely adopted framework for IT Service Management (ITSM)."
+    },
+    {
+      "q": "A company uses data on customer spending habits to offer personalized loan amounts. This is an example of:",
+      "options": ["Cost leadership", "Differentiation through digital capabilities", "Operational efficiency", "Risk avoidance"],
+      "answer": 1,
+      "why": "Using unique data to create personalized experiences is a form of differentiation that competitors cannot easily replicate."
+    },
+    {
+      "q": "What is the purpose of 'Audit Trails' in IT governance?",
+      "options": ["To automatically fix software bugs", "To provide a chronological record of system activities for accountability and compliance", "To design new websites", "To increase internet speed"],
+      "answer": 1,
+      "why": "Audit trails track who accessed what and when, which is crucial for security and regulatory compliance."
+    },
+    {
+      "q": "In ITIL v4, what is the 'Service Value Chain'?",
+      "options": ["A set of interconnected activities (plan, engage, design, deliver, support, improve) that drive service delivery", "A physical supply chain for hardware", "A type of software license", "The organizational chart of the IT department"],
+      "answer": 0,
+      "why": "The service value chain describes the key activities required to respond to demand and facilitate value realization."
+    },
+    {
+      "q": "Which type of risk is associated with the failure of a third-party vendor?",
+      "options": ["Strategic risk", "Operational risk", "Compliance risk", "Cybersecurity risk"],
+      "answer": 1,
+      "why": "Vendor failures are operational risks because they directly impact the day-to-day delivery of IT services."
+    },
+    {
+      "q": "What is the primary goal of 'Operational Efficiency' in the digital age?",
+      "options": ["Doing more with less by using data, automation, and integration", "Increasing the number of manual processes", "Reducing the use of technology", "Making decisions based solely on gut feeling"],
+      "answer": 0,
+      "why": "Digital operational efficiency focuses on using technology as a multiplier of productivity and accuracy."
+    },
+    {
+      "q": "Why is 'Stakeholder Management' important in Change Management?",
+      "options": ["To ensure everyone gets a promotion", "To map stakeholders and engage them effectively to reduce resistance to change", "To bypass the need for a Change Advisory Board (CAB)", "To increase project costs"],
+      "answer": 1,
+      "why": "Effective stakeholder management identifies who is impacted and tailors communication to foster buy-in and support."
+    },
+    {
+      "q": "What is the main benefit of a 'Hybrid Backup' strategy?",
+      "options": ["It only uses cloud storage", "It combines fast local recovery with the redundancy of cloud storage", "It eliminates the need for any backups", "It is the cheapest option available"],
+      "answer": 1,
+      "why": "Hybrid backup allows quick restores from local hardware while maintaining an offsite copy in the cloud for full disaster recovery."
+    },
+    {
+      "q": "According to the study material, what is a key characteristic of the 'Digital Ecosystem Era'?",
+      "options": ["Centralized mainframe computing", "API-driven design and real-time data sharing", "Only using on-premise servers", "No integration with third-party platforms"],
+      "answer": 1,
+      "why": "The ecosystem era relies on APIs, real-time data sharing, and interconnected platforms to deliver value."
+    },
+    {
+      "q": "What is the difference between 'Efficiency' and 'Effectiveness'?",
+      "options": ["They mean the same thing", "Efficiency is doing the right task; Effectiveness is doing the task right", "Efficiency is doing a task quickly with minimal waste; Effectiveness is doing the right task to meet strategic goals", "Effectiveness is about speed; Efficiency is about strategy"],
+      "answer": 2,
+      "why": "Efficiency is about resource optimization, while effectiveness is about achieving the desired business outcome."
+    },
+    {
+      "q": "Why is 'Project Monitoring and Control' important?",
+      "options": ["To ensure the project stays on track, within budget, and meets its objectives", "To make the project more expensive", "To eliminate the project manager", "To ignore risks"],
+      "answer": 0,
+      "why": "Monitoring and control track progress against the plan and allow for corrective actions to be taken when deviations occur."
+    },
+    {
+      "q": "What is the purpose of a 'Service Level Agreement' (SLA)?",
+      "options": ["To define internal team goals", "To establish a formal agreement between an IT service provider and a customer defining expected service levels", "To replace the need for IT governance", "To manage the company's marketing budget"],
+      "answer": 1,
+      "why": "An SLA sets clear expectations for performance metrics (like uptime) and remedies for non-compliance."
+    },
+    {
+      "q": "Which framework provides a structured approach for IT Service Management (ITSM)?",
+      "options": ["ISO 27001", "COBIT", "ITIL", "GDPR"],
+      "answer": 2,
+      "why": "ITIL (Information Technology Infrastructure Library) is the most widely used framework for ITSM."
+    },
+    {
+      "q": "What is 'Zero-Trust' security?",
+      "options": ["Trusting all users inside the company firewall", "A model that verifies every user and device, even those inside the corporate network", "A system with no passwords", "A type of antivirus software"],
+      "answer": 1,
+      "why": "Zero-trust assumes no implicit trust and continuously verifies access requests, which is crucial for modern ecosystems."
+    },
+    {
+      "q": "In the context of ITIL, what is 'Incident Management' focused on?",
+      "options": ["Finding the root cause of a problem", "Restoring normal service operations as quickly as possible", "Designing new IT services", "Managing the IT budget"],
+      "answer": 1,
+      "why": "Incident management aims to minimize the impact of disruptions by restoring service quickly, often using temporary workarounds."
+    },
+    {
+      "q": "What is a 'Platform Ecosystem' in the digital economy?",
+      "options": ["A physical office space for IT teams", "A network of organizations and developers that build on a shared platform (e.g., APIs)", "A type of cloud server", "An internal HR software"],
+      "answer": 1,
+      "why": "Platform ecosystems create dependency and network effects, as third parties build services on top of a core platform."
+    },
+    {
+      "q": "Which IT governance framework provides a high-level, principle-based approach designed for board members and executives?",
+      "options": ["COBIT", "ITIL", "ISO/IEC 38500", "ISO/IEC 27001"],
+      "answer": 2,
+      "why": "ISO/IEC 38500 is a strategic, principle-based standard specifically for the corporate governance of IT."
+    },
+    {
+      "q": "What is a 'Standard Change' in IT Change Management?",
+      "options": ["A high-risk change requiring full CAB review", "A pre-approved, low-risk, routine change", "An emergency fix for a cyberattack", "A change that affects the entire company"],
+      "answer": 1,
+      "why": "Standard changes are routine and low-risk, following a proven procedure and requiring minimal oversight."
+    },
+    {
+      "q": "Why does 'Digital Operational Efficiency' matter in emerging economies?",
+      "options": ["To increase manual paperwork", "To overcome logistical chaos and high costs with smarter, data-driven models", "To slow down business processes", "To avoid using the internet"],
+      "answer": 1,
+      "why": "Digital efficiency helps organizations in emerging markets leapfrog traditional infrastructure challenges by using agile, tech-driven solutions."
+    },
+    {
+      "q": "Which of the following is an example of 'Value Delivery' in IT?",
+      "options": ["Buying expensive software that no one uses", "A CRM system that increases revenue by 15% within six months", "Installing new servers for no specific reason", "Increasing the IT budget without results"],
+      "answer": 1,
+      "why": "Value delivery is about measurable returns, like increased revenue, time saved, or improved decision-making."
+    },
+    {
+      "q": "What is the role of 'Problem Management' in ITSM?",
+      "options": ["To restore service quickly", "To find the root cause of recurring incidents and eliminate them", "To design new software", "To handle customer billing issues"],
+      "answer": 1,
+      "why": "Problem management investigates the underlying causes of multiple incidents to prevent them from happening again."
+    },
+    {
+      "q": "In the context of risk management, what does 'Risk Transfer' mean?",
+      "options": ["Accepting the risk without action", "Eliminating the risk completely", "Shifting the risk to a third party, such as through insurance or outsourcing", "Ignoring the risk"],
+      "answer": 2,
+      "why": "Risk transfer involves shifting the financial impact of a risk to another party (e.g., cyber insurance)."
+    },
+    {
+      "q": "What is the 'Waterfall' methodology best suited for?",
+      "options": ["Projects with rapidly changing requirements", "Projects with clearly defined, fixed requirements and a need for strict documentation", "Small startup projects", "Projects that require daily customer feedback"],
+      "answer": 1,
+      "why": "Waterfall is ideal for projects where scope is stable and predictability/documentation are paramount."
+    },
+    {
+      "q": "Why is 'Stakeholder Management' critical in IT projects?",
+      "options": ["To ensure everyone gets a new laptop", "To align expectations, communicate effectively, and reduce resistance", "To increase the project's complexity", "To bypass the need for a project manager"],
+      "answer": 1,
+      "why": "Engaging stakeholders early and often ensures their needs are met and reduces the risk of project failure due to resistance."
+    },
+    {
+      "q": "What is a key feature of the 'Cloud and Mobile Era' of enterprise IT?",
+      "options": ["Centralized mainframe computing", "Pay-as-you-go computing resources and mobile-first users", "Standalone desktop computers", "No internet connectivity"],
+      "answer": 1,
+      "why": "The cloud and mobile era introduced scalable, pay-as-you-go cloud resources and ubiquitous mobile access."
+    },
+    {
+      "q": "What is the primary purpose of a 'Balanced Scorecard' for IT?",
+      "options": ["To measure financial performance only", "To measure performance across Financial, Customer, Internal Processes, and Learning/Growth", "To track employee attendance", "To design new software"],
+      "answer": 1,
+      "why": "The Balanced Scorecard provides a holistic view of IT performance across four key perspectives."
+    },
+    {
+      "q": "Which of the following is a 'Strategic Risk' for an IT project?",
+      "options": ["A server crashing", "Investing in a legacy system that hinders future digital transformation", "A data breach", "A software bug"],
+      "answer": 1,
+      "why": "Strategic risks occur when IT initiatives fail to align with business goals or compromise long-term competitiveness."
+    },
+    {
+      "q": "In ITIL v4, what is a 'Service Request'?",
+      "options": ["A report of a system failure", "A formal request from a user for something to be provided (e.g., password reset, new software)", "A major cyberattack", "A change to the IT budget"],
+      "answer": 1,
+      "why": "A service request is a user's routine request for information, advice, or a standard change (like access to an app)."
+    },
+    {
+      "q": "What is 'Technical Debt'?",
+      "options": ["Money owed to IT vendors", "The cost of maintaining legacy hardware", "The implied cost of rework caused by choosing an easy solution now instead of a better approach", "A type of bank loan for IT projects"],
+      "answer": 2,
+      "why": "Technical debt occurs when teams take shortcuts (e.g., quick fixes) that make future maintenance harder and more expensive."
+    },
+    {
+      "q": "Which regulatory framework requires organizations to protect the personal data of EU residents, impacting Nigerian businesses that serve EU customers?",
+      "options": ["NDPR", "HIPAA", "GDPR", "SOX"],
+      "answer": 2,
+      "why": "GDPR applies to any organization globally that processes the personal data of individuals in the EU."
+    },
+    {
+      "q": "What is 'AIOps'?",
+      "options": ["A cloud storage service", "Applying machine learning and AI to automate IT operations", "A type of firewall", "A project management methodology"],
+      "answer": 1,
+      "why": "AIOps uses AI and ML to enhance IT operations, such as predicting outages and automating responses."
+    },
+    {
+      "q": "In Change Management, what is a 'Normal Change'?",
+      "options": ["A routine change requiring no approval", "A change that must go through the full change management process, including CAB review", "A change to fix a critical outage", "A change to employee salaries"],
+      "answer": 1,
+      "why": "Normal changes are non-emergency, but require full impact assessment, risk evaluation, and CAB approval."
+    },
+    {
+      "q": "What is the primary goal of 'Enterprise Architecture'?",
+      "options": ["To make systems incompatible", "To ensure interoperability, scalability, and resilience of the IT ecosystem", "To reduce the number of IT staff", "To increase the cost of IT projects"],
+      "answer": 1,
+      "why": "Enterprise architecture designs the IT structure to ensure systems can talk to each other and scale with the business."
+    },
+    {
+      "q": "What is a 'Business Impact Analysis' (BIA)?",
+      "options": ["A report on employee productivity", "A process to identify and evaluate the effects of disruptions on critical operations", "A financial audit of the IT department", "A marketing strategy"],
+      "answer": 1,
+      "why": "BIA is a core part of BCP that determines which functions are critical and the impact of their downtime."
+    },
+    {
+      "q": "Which of the following is an example of 'Resource Management'?",
+      "options": ["Having multiple departments buy their own printers without oversight", "Centralizing IT procurement and sharing resources to avoid waste", "Increasing the IT budget", "Ignoring the need for staff training"],
+      "answer": 1,
+      "why": "Resource management ensures that IT assets (hardware, software, people) are used efficiently without duplication and waste."
+    },
+    {
+      "q": "Why is 'Change Management' particularly important in environments like fintech?",
+      "options": ["To slow down the development process", "To prevent service outages and security vulnerabilities during rapid digital transformation", "To avoid using the cloud", "To eliminate the need for IT governance"],
+      "answer": 1,
+      "why": "In fast-paced environments, uncontrolled changes can cause severe disruptions; change management ensures stability."
+    },
+    {
+      "q": "What is a 'Hot Site' in Disaster Recovery?",
+      "options": ["A basic facility with no equipment", "A partially equipped facility with daily backups", "A fully operational facility with real-time data replication and immediate failover", "A cloud storage solution"],
+      "answer": 2,
+      "why": "A hot site is the most expensive but reliable DR option, mirroring the primary site in real-time for near-zero downtime."
+    },
+    {
+      "q": "What is 'Strategic Alignment' in IT?",
+      "options": ["Making IT decisions in isolation", "Ensuring IT goals directly support the organization's mission and vision", "Reducing the IT budget", "Outsourcing all IT functions"],
+      "answer": 1,
+      "why": "Strategic alignment means IT exists to empower business goals, not just for its own sake."
+    },
+    {
+      "q": "Which framework focuses on IT Service Management and emphasizes continual improvement?",
+      "options": ["COBIT", "ITIL", "ISO 27001", "PRINCE2"],
+      "answer": 1,
+      "why": "ITIL is the most widely adopted framework for IT Service Management (ITSM)."
+    },
+    {
+      "q": "A company uses data on customer spending habits to offer personalized loan amounts. This is an example of:",
+      "options": ["Cost leadership", "Differentiation through digital capabilities", "Operational efficiency", "Risk avoidance"],
+      "answer": 1,
+      "why": "Using unique data to create personalized experiences is a form of differentiation that competitors cannot easily replicate."
+    },
+    {
+      "q": "What is the purpose of 'Audit Trails' in IT governance?",
+      "options": ["To automatically fix software bugs", "To provide a chronological record of system activities for accountability and compliance", "To design new websites", "To increase internet speed"],
+      "answer": 1,
+      "why": "Audit trails track who accessed what and when, which is crucial for security and regulatory compliance."
+    },
+    {
+      "q": "In ITIL v4, what is the 'Service Value Chain'?",
+      "options": ["A set of interconnected activities (plan, engage, design, deliver, support, improve) that drive service delivery", "A physical supply chain for hardware", "A type of software license", "The organizational chart of the IT department"],
+      "answer": 0,
+      "why": "The service value chain describes the key activities required to respond to demand and facilitate value realization."
+    },
+    {
+      "q": "Which type of risk is associated with the failure of a third-party vendor?",
+      "options": ["Strategic risk", "Operational risk", "Compliance risk", "Cybersecurity risk"],
+      "answer": 1,
+      "why": "Vendor failures are operational risks because they directly impact the day-to-day delivery of IT services."
+    },
+    {
+      "q": "What is the primary goal of 'Operational Efficiency' in the digital age?",
+      "options": ["Doing more with less by using data, automation, and integration", "Increasing the number of manual processes", "Reducing the use of technology", "Making decisions based solely on gut feeling"],
+      "answer": 0,
+      "why": "Digital operational efficiency focuses on using technology as a multiplier of productivity and accuracy."
+    },
+    {
+      "q": "Why is 'Stakeholder Management' important in Change Management?",
+      "options": ["To ensure everyone gets a promotion", "To map stakeholders and engage them effectively to reduce resistance to change", "To bypass the need for a Change Advisory Board (CAB)", "To increase project costs"],
+      "answer": 1,
+      "why": "Effective stakeholder management identifies who is impacted and tailors communication to foster buy-in and support."
+    },
+    {
+      "q": "What is the main benefit of a 'Hybrid Backup' strategy?",
+      "options": ["It only uses cloud storage", "It combines fast local recovery with the redundancy of cloud storage", "It eliminates the need for any backups", "It is the cheapest option available"],
+      "answer": 1,
+      "why": "Hybrid backup allows quick restores from local hardware while maintaining an offsite copy in the cloud for full disaster recovery."
+    },
+    {
+      "q": "According to the study material, what is a key characteristic of the 'Digital Ecosystem Era'?",
+      "options": ["Centralized mainframe computing", "API-driven design and real-time data sharing", "Only using on-premise servers", "No integration with third-party platforms"],
+      "answer": 1,
+      "why": "The ecosystem era relies on APIs, real-time data sharing, and interconnected platforms to deliver value."
+    },
+    {
+      "q": "What is the difference between 'Efficiency' and 'Effectiveness'?",
+      "options": ["They mean the same thing", "Efficiency is doing the right task; Effectiveness is doing the task right", "Efficiency is doing a task quickly with minimal waste; Effectiveness is doing the right task to meet strategic goals", "Effectiveness is about speed; Efficiency is about strategy"],
+      "answer": 2,
+      "why": "Efficiency is about resource optimization, while effectiveness is about achieving the desired business outcome."
+    },
+    {
+      "q": "Why is 'Project Monitoring and Control' important?",
+      "options": ["To ensure the project stays on track, within budget, and meets its objectives", "To make the project more expensive", "To eliminate the project manager", "To ignore risks"],
+      "answer": 0,
+      "why": "Monitoring and control track progress against the plan and allow for corrective actions to be taken when deviations occur."
+    },
+    {
+      "q": "What is the purpose of a 'Service Level Agreement' (SLA)?",
+      "options": ["To define internal team goals", "To establish a formal agreement between an IT service provider and a customer defining expected service levels", "To replace the need for IT governance", "To manage the company's marketing budget"],
+      "answer": 1,
+      "why": "An SLA sets clear expectations for performance metrics (like uptime) and remedies for non-compliance."
+    },
+    {
+      "q": "Which framework provides a structured approach for IT Service Management (ITSM)?",
+      "options": ["ISO 27001", "COBIT", "ITIL", "GDPR"],
+      "answer": 2,
+      "why": "ITIL (Information Technology Infrastructure Library) is the most widely used framework for ITSM."
+    },
+    {
+      "q": "What is 'Zero-Trust' security?",
+      "options": ["Trusting all users inside the company firewall", "A model that verifies every user and device, even those inside the corporate network", "A system with no passwords", "A type of antivirus software"],
+      "answer": 1,
+      "why": "Zero-trust assumes no implicit trust and continuously verifies access requests, which is crucial for modern ecosystems."
+    }
+  ]
+}
